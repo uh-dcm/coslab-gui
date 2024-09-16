@@ -71,3 +71,6 @@ Thumbs.db
 *.dll
 *.exe
 
+# Debug Folder
+*build-GUI-Desktop-Debug/
+
