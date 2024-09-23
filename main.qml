@@ -1,9 +1,9 @@
-import QtQuick
-import QtQuick.Window
+import QtQuick 2.15
+import QtQuick.Window 2.15
 
 // Libraries
 import QtQuick.Controls 2.15
-import QtQuick.Controls.Material
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 2.15
 
 // Templates
@@ -23,20 +23,24 @@ ApplicationWindow {
         columns: 2
 
         RectButton{
-            text: "Add Images from Local Machine"
+            text: qsTr("Add Images from Local Machine")
 
         }
 
         RectButton{
-            text: "Add Images from the Internet"
+            text: qsTr("Add Images from the Internet")
         }
 
         RectButton{
-            text: "Analyse Images"
+            text: qsTr("Analyse Images")
+            onClicked: {
+                console.log("button clicked")
+            }
+
         }
 
         RectButton{
-            text: "Remove All Images"
+            text: qsTr("Remove All Images")
         }
     }
 }
