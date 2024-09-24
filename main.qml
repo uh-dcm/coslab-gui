@@ -65,12 +65,24 @@ ApplicationWindow {
 
     ListView {
         id: listview
-        // ToDo: Implement this thing somehow
+        height: 100
+        anchors{
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+        orientation: Qt.Horizontal
+        delegate:
+            Image {
+            width: 160
+            height: 90
+            source: modelData
+            }
     }
 
     FileDialog {
+        FileDialog.OpenFiles
         id: fileDialog
-        title: "Choose a file"
         property url defaultz: "E:\IMG"
         nameFilters: [ "Image files (*.jpg *.png *.bmp)", "All files (*)" ]
         onAccepted: {
