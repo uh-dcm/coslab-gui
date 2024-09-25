@@ -12,9 +12,9 @@ import QtQuick.Dialogs
 import "."
 
 ApplicationWindow {
+    visible: true
     width: 640
     height: 480
-    visible: true
     title: qsTr("coslab-gui")
 
     GridLayout{
@@ -46,7 +46,7 @@ ApplicationWindow {
 
         RectButton{
             id: btAnalyseAll
-            text: qsTr("Analyse Images")
+            text: qsTr("Analyse All " + imageListView.count + " Images")
             backgroundDefaultColor: "#78ec95"
 
             onClicked: {
@@ -57,40 +57,44 @@ ApplicationWindow {
 
         RectButton{
             id: btRemoveAll
-            text: qsTr("Remove All Images")
+            text: qsTr("Remove All " + imageListView.count + " Images")
             backgroundDefaultColor: "#ec7878"
 
         }
     }
 
-    ListView {
-        id: listview
-        height: 100
-        anchors{
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
-        orientation: Qt.Horizontal
-        delegate:
-            Image {
-            width: 160
-            height: 90
-            source: modelData
-            }
+    ListModel {
+        id: imageModel
     }
 
-    FileDialog {
-        FileDialog.OpenFiles
-        id: fileDialog
-        property url defaultz: "E:\IMG"
-        nameFilters: [ "Image files (*.jpg *.png *.bmp)", "All files (*)" ]
-        onAccepted: {
-            var images = [];
-            for(var i in fileDialog.fileUrls){
-                images[i] = fileDialog.fileUrls[i]
+   ListView {
+        id: imageListView
+        anchors.left: parent.left ; anchors.leftMargin: 20
+        anchors.right: parent.right ; anchors.rightMargin: 20
+        anchors.top: parent.top ; anchors.topMargin: 20
+        anchors.bottom: buttonGrid.top ; anchors.bottomMargin: 40
+
+        spacing: 10
+        flickableDirection: Flickable.AutoFlickDirection
+
+        orientation: Qt.Horizontal
+        delegate: Image {
+            width: 200
+            height: imageListView.height
+            source: model.imageSource
+            fillMode: Image.PreserveAspectFit
             }
-            listview.model = images
+        }
+
+    FileDialog {
+        id: fileDialog
+        fileMode: FileDialog.OpenFiles
+        nameFilters: [ "Image files (*.jpg *.jpeg *.png *.bmp *.gif)", "All files (*)" ]
+        onAccepted: {
+            for (var i = 0; i < selectedFiles.length; i++) {
+                imageModel.append({"imageSource": selectedFiles[i]})
+            }
+            imageListView.model = imageModel
         }
         onRejected: fileDialog.visible = false
     }
