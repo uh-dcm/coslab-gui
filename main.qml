@@ -42,6 +42,8 @@ ApplicationWindow {
         RectButton{
             id: btAddInternet
             text: qsTr("Add Images from the Internet")
+
+            onClicked: textDialog.open()
         }
 
         RectButton{
@@ -59,7 +61,9 @@ ApplicationWindow {
             id: btRemoveAll
             text: qsTr("Remove All " + imageListView.count + " Images")
             backgroundDefaultColor: "#ec7878"
-
+            onClicked: {
+                imageModel.clear()
+            }
         }
     }
 
@@ -76,15 +80,35 @@ ApplicationWindow {
 
         spacing: 10
         flickableDirection: Flickable.AutoFlickDirection
-
         orientation: Qt.Horizontal
-        delegate: Image {
+
+        model: imageModel
+
+        delegate: Item {
             width: 200
             height: imageListView.height
-            source: model.imageSource
-            fillMode: Image.PreserveAspectFit
+
+            Button {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                width: 50
+                height: 50
+                background: Image {
+                    source: "Graphics/trashcan icon.png"
+                }
+                onClicked: {
+                    imageModel.remove(index)
+                }
+            }
+
+            Image {
+                width: 200
+                height: imageListView.height
+                source: model.imageSource
+                fillMode: Image.PreserveAspectFit
             }
         }
+    }
 
     FileDialog {
         id: fileDialog
@@ -94,9 +118,33 @@ ApplicationWindow {
             for (var i = 0; i < selectedFiles.length; i++) {
                 imageModel.append({"imageSource": selectedFiles[i]})
             }
-            imageListView.model = imageModel
         }
         onRejected: fileDialog.visible = false
     }
 
+    Dialog{
+        id: textDialog
+        title: "Add Image from the Internet"
+        standardButtons: Dialog.Close
+        anchors.centerIn: parent
+
+        TextField {
+            id: textInput
+            placeholderText: "Paste your URL here. Use Enter to confirm URL."
+            anchors.fill: parent
+            anchors.margins: 10
+            Keys.onReturnPressed: {
+                if (textInput.text.endsWith(".jpg") ||
+                    textInput.text.endsWith(".jpeg") ||
+                    textInput.text.endsWith(".png") ||
+                    textInput.text.endsWith(".bmp") ||
+                    textInput.text.endsWith(".gif")) {
+                    imageModel.append({"imageSource": textInput.text})
+                    placeholderText = "Image loaded successfully!"
+                } else {
+                    placeholderText = "Error: The URL was not identified as an image."
+                }
+            }
+        }
+    }
 }
