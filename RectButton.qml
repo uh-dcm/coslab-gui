@@ -15,7 +15,7 @@ Button{
     Layout.fillWidth: true
 
     background: Rectangle{
-        radius: 5
+        radius: 3
         border.width: root.hovered ? 1 : 0
         color: root.down ? root.backgroundPressedColor : root.backgroundDefaultColor
     }
