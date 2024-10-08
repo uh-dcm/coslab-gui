@@ -12,6 +12,7 @@ import QtQuick.Dialogs
 import "."
 
 ApplicationWindow {
+    id: mainWindow
     visible: true
     width: 640
     height: 480
@@ -25,6 +26,12 @@ ApplicationWindow {
 
     Step2 {
         id: step2
+        anchors.fill: parent
+        visible: false
+    }
+
+    Step3{
+        id: step3
         anchors.fill: parent
         visible: false
     }
