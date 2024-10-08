@@ -12,7 +12,12 @@ import QtQuick.Dialogs
 import "."
 
 Item {
-    GridLayout{
+
+    Title{
+        id: title
+    }
+
+    ColumnLayout{
         id: buttonGrid
         // Positioning
         anchors.left: parent.left ; anchors.leftMargin: 20
@@ -20,46 +25,58 @@ Item {
         anchors.bottom: parent.bottom ; anchors.bottomMargin: 40
 
         // Design
-        columnSpacing: 30
-        rowSpacing: 20
-
-        // Number of elements
-        rows: 2
-        columns: 2
+        spacing: 20
 
         // Elements
-        RectButton{
-            id: btAddLocal
-            text: qsTr("Add Images from Local Machine")
-            onClicked: fileDialog.open()
-        }
+        RowLayout{
+            spacing: 20
 
-        RectButton{
-            id: btAddInternet
-            text: qsTr("Add Images from the Internet")
+            RectButton{
+                id: btAddLocal
+                text: qsTr("Add Images from Local Machine")
+                onClicked: fileDialog.open()
+                Layout.fillWidth: true
 
-            onClicked: textDialog.open()
-        }
-
-        RectButton{
-            id: btAnalyseAll
-            text: qsTr("Analyse All " + imageListView.count + " Images")
-            backgroundDefaultColor: "#78ec95"
-
-            onClicked: {
-                console.log("Switching to step 2")
-                step1.visible = false
-                step2.visible = true
             }
 
+            RectButton{
+                id: btAddInternet
+                text: qsTr("Add Images from the Internet")
+
+                onClicked: textDialog.open()
+            }
         }
 
-        RectButton{
-            id: btRemoveAll
-            text: qsTr("Remove All " + imageListView.count + " Images")
-            backgroundDefaultColor: "#ec7878"
-            onClicked: {
-                imageModel.clear()
+        RowLayout{
+            spacing: 20
+
+            RectButton{
+                id: btAnalyseAll
+                text: qsTr("Analyse All " + imageListView.count + " Images")
+                backgroundDefaultColor: "#78ec95"
+
+                 Layout.fillWidth: true
+                 Layout.preferredWidth: 60
+
+                onClicked: {
+                    console.log("Switching to step 2")
+                    step1.visible = false
+                    step2.visible = true
+                }
+
+            }
+
+            RectButton{
+                id: btRemoveAll
+                text: qsTr("Remove All " + imageListView.count + " Images")
+                backgroundDefaultColor: "#ec7878"
+
+                Layout.fillWidth: true
+                Layout.preferredWidth: 25
+
+                onClicked: {
+                    imageModel.clear()
+                }
             }
         }
     }
@@ -72,7 +89,7 @@ Item {
         id: imageListView
         anchors.left: parent.left ; anchors.leftMargin: 20
         anchors.right: parent.right ; anchors.rightMargin: 20
-        anchors.top: parent.top ; anchors.topMargin: 20
+        anchors.top: title.bottom ; anchors.topMargin: 20
         anchors.bottom: buttonGrid.top ; anchors.bottomMargin: 40
 
         spacing: 10
@@ -88,8 +105,8 @@ Item {
             Button {
                 anchors.top: parent.top
                 anchors.left: parent.left
-                width: 50
-                height: 50
+                width: 40
+                height: 40
                 background: Image {
                     source: "Graphics/trashcan icon.png"
                 }
