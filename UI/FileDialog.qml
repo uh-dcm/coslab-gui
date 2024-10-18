@@ -26,7 +26,7 @@ Dialog{
                     textInput.text.endsWith(".png") ||
                     textInput.text.endsWith(".bmp") ||
                     textInput.text.endsWith(".gif")) {
-                    imageModel.append({"imageSource": textInput.text})
+                    images.append({"imageSource": textInput.text})
                     placeholderText = "Image loaded successfully!"
                 } else {
                     placeholderText = "Error: The URL was not identified as an image."

@@ -18,6 +18,11 @@ ApplicationWindow {
     height: 480
     title: qsTr("coslab-gui")
 
+    // the list for all images
+    ListModel {
+        id: images
+    }
+
     Step1 {
         id: step1
         anchors.fill: parent

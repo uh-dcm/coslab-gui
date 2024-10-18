@@ -43,7 +43,7 @@ Item {
                 id: btAddInternet
                 text: qsTr("Add Images from the Internet")
 
-                onClicked: textDialog.open()
+                onClicked: console.log(  c )
             }
         }
 
@@ -52,7 +52,7 @@ Item {
 
             Button{
                 id: btAnalyseAll
-                text: qsTr("Analyse All " + imageListView.count + " Images")
+                text: qsTr("Analyse All %1 Images").arg( images.count )
 
                  Layout.fillWidth: true
                  Layout.preferredWidth: 60
@@ -79,9 +79,7 @@ Item {
         }
     }
 
-    ListModel {
-        id: imageModel
-    }
+
 
    ListView {
         id: imageListView
@@ -94,7 +92,7 @@ Item {
         flickableDirection: Flickable.AutoFlickDirection
         orientation: Qt.Horizontal
 
-        model: imageModel
+        model: images
 
         delegate: Item {
             width: 200
@@ -109,7 +107,7 @@ Item {
                     source: "Graphics/trashcan icon.png"
                 }
                 onClicked: {
-                    imageModel.remove(index)
+                    model.remove(index)
                 }
             }
 

@@ -24,7 +24,7 @@ Item{
         anchors.right: parent.right ; anchors.rightMargin: 30
         font.pixelSize: 20
         // ToDo: make the image counter work
-        text: qsTr("Ready to analyse " + "[Image Count]" + " images.\nChoose services which are used for image labelling.")
+        text: qsTr("Ready to analyse %1 images.\nChoose services which are used for image labelling.").arg( images.count )
     }
 
     ColumnLayout{
