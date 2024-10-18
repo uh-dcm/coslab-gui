@@ -68,7 +68,7 @@ Item{
         Button{
             id: btAnayliseServices
             // ToDo: Make the image count work
-            text: qsTr("Analyse All " + "[Image Count]" + " Images")
+            text: qsTr("Analyse All %1 Images").arg( images.count )
 
             Layout.fillWidth: true
             Layout.preferredWidth: 60
@@ -82,13 +82,14 @@ Item{
         }
 
         Button{
-            id: btAnalyseAll
+            id: btBack
             text: qsTr("Back")
 
             Layout.fillWidth: true
             Layout.preferredWidth: 25
 
             onClicked: {
+
                 console.log("Switching to step 1")
                 step2.visible = false
                 step1.visible = true
