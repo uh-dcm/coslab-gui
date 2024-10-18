@@ -79,7 +79,39 @@ Item {
         }
     }
 
+    DropArea {
+        id: dropArea
+        anchors.fill: parent
 
+        // Qt Complains about injecting parameters into signal handlers
+        // but it works anyway.
+        onDropped: {
+            for (var i = 0; i < drop.urls.length; i++) {
+                if (drop.urls[i].toString().endsWith(".jpg") ||
+                    drop.urls[i].toString().endsWith(".jpeg") ||
+                    drop.urls[i].toString().endsWith(".png") ||
+                    drop.urls[i].toString().endsWith(".bmp") ||
+                    drop.urls[i].toString().endsWith(".gif")) {
+                    images.append({"imageSource": drop.urls[i]})
+                }
+            }
+        }
+
+        Rectangle {
+            width: parent.width - 20
+            height: parent.height - 20
+            anchors.centerIn: parent
+            color: dropArea.containsDrag ? "lightgreen" : "transparent"
+            border.color: "transparent"
+            radius: 10
+
+            Text {
+                anchors.centerIn: parent
+                text: dropArea.containsDrag ? "Drop Images Here" : ""
+                font.bold: true
+            }
+        }
+    }
 
    ListView {
         id: imageListView
@@ -107,7 +139,7 @@ Item {
                     source: "Graphics/trashcan icon.png"
                 }
                 onClicked: {
-                    model.remove(index)
+                    images.remove(index)
                 }
             }
 
