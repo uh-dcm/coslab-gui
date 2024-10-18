@@ -31,7 +31,7 @@ Item {
         RowLayout{
             spacing: 20
 
-            RectButton{
+            Button{
                 id: btAddLocal
                 text: qsTr("Add Images from Local Machine")
                 onClicked: fileDialog.open()
@@ -39,7 +39,7 @@ Item {
 
             }
 
-            RectButton{
+            Button{
                 id: btAddInternet
                 text: qsTr("Add Images from the Internet")
 
@@ -50,10 +50,9 @@ Item {
         RowLayout{
             spacing: 20
 
-            RectButton{
+            Button{
                 id: btAnalyseAll
                 text: qsTr("Analyse All " + imageListView.count + " Images")
-                backgroundDefaultColor: "#78ec95"
 
                  Layout.fillWidth: true
                  Layout.preferredWidth: 60
@@ -66,10 +65,9 @@ Item {
 
             }
 
-            RectButton{
+            Button {
                 id: btRemoveAll
                 text: qsTr("Remove All " + imageListView.count + " Images")
-                backgroundDefaultColor: "#ec7878"
 
                 Layout.fillWidth: true
                 Layout.preferredWidth: 25

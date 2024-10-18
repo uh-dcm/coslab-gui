@@ -65,11 +65,10 @@ Item{
         anchors.right: parent.right ; anchors.rightMargin: 20
         anchors.bottom: parent.bottom ; anchors.bottomMargin: 40
 
-        RectButton{
+        Button{
             id: btAnayliseServices
             // ToDo: Make the image count work
             text: qsTr("Analyse All " + "[Image Count]" + " Images")
-            backgroundDefaultColor: "#78ec95"
 
             Layout.fillWidth: true
             Layout.preferredWidth: 60
@@ -82,10 +81,9 @@ Item{
 
         }
 
-        RectButton{
+        Button{
             id: btAnalyseAll
             text: qsTr("Back")
-            backgroundDefaultColor: "#ec7878"
 
             Layout.fillWidth: true
             Layout.preferredWidth: 25
