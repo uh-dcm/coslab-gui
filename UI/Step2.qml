@@ -74,6 +74,18 @@ Item{
             Layout.preferredWidth: 60
 
             onClicked: {
+
+                // Converting ListModel so it can be sent to python
+                var itemList = []
+                    for (var i = 0; i < images.count; i++) {
+                        var item = images.get(i)
+                        itemList.push(item.imageSource.toString())
+                    }
+
+                // Send signal to python
+                analyseImages.analyse_images(itemList)
+                console.log(analyseImages)
+
                 console.log("Switching to step 3")
                 step2.visible = false
                 step3.visible = true
