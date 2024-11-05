@@ -18,9 +18,10 @@ class AnalyseImages(QObject):
     def result(self):
         return self._result
     
-    @Slot(list)
-    def analyse_images(self, url_list):
+    @Slot(list, list)
+    def analyse_images(self, url_list, checkboxes):
         print(url_list)
+        print(checkboxes)
         self._result = ["this is a test", "this is also a test"]
         self.resultChanged.emit(self._result)
 

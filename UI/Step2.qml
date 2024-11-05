@@ -77,13 +77,18 @@ Item{
 
                 // Converting ListModel so it can be sent to python
                 var itemList = []
-                    for (var i = 0; i < images.count; i++) {
-                        var item = images.get(i)
-                        itemList.push(item.imageSource.toString())
-                    }
+                for (var i = 0; i < images.count; i++) {
+                    var item = images.get(i)
+                    itemList.push(item.imageSource.toString())
+                }
+
+                var checkboxes = [googleBox.checked,
+                                  ibmBox.checked,
+                                  microsoftBox.checked,
+                                  amazonBox.checked]
 
                 // Send signal to python
-                analyseImages.analyse_images(itemList)
+                analyseImages.analyse_images(itemList, checkboxes)
                 console.log(analyseImages)
 
                 console.log("Switching to step 3")
