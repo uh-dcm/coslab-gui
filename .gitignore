@@ -37,6 +37,7 @@ Thumbs.db
 *.user
 *.qtcreator/
 *test.py
+*ok.yaml
 
 # qtcreator generated files
 *.pro.user*
