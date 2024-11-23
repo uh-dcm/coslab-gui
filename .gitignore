@@ -78,3 +78,6 @@ CMakeLists.txt.user*
 *.pickle
 *.csv
 
+# Generated Files
+*wordcloud.png
+
