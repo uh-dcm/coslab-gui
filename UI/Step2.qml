@@ -97,7 +97,7 @@ Item{
             }
 
         }
-
+        // Processing wordcloud URLs received from python
         Connections {
             target: generateWordcloud
             onWordcloudGenerated: function(urls) {

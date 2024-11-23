@@ -22,7 +22,7 @@ ApplicationWindow {
     ListModel {
         id: images
     }
-
+    // List for generated wordclouds
     ListModel {
         id: wordcloudModel
     }
