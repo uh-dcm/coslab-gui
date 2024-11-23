@@ -23,6 +23,10 @@ ApplicationWindow {
         id: images
     }
 
+    ListModel {
+        id: wordcloudModel
+    }
+
     Step1 {
         id: step1
         anchors.fill: parent

@@ -1,12 +1,16 @@
 # This Python file uses the following encoding: utf-8
 import sys
 import yaml
+import os
+
+import matplotlib.pyplot as plt
+
 from wordcloud import WordCloud
 from pathlib import Path
 
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
-from PySide6.QtCore import QObject, Signal, Slot, Property
+from PySide6.QtCore import QObject, Signal, Slot, QUrl
 
 from coslab import aws
 from coslab import googlecloud
@@ -18,24 +22,12 @@ from coslab import tag_comparator
 class AnalyseImages(QObject):
     def __init__(self):
         super().__init__()
-        self._result = ""
-        self._wordClouds = {}
+        self._results = taggerresults.TaggerResults()
+        self._services = {}
+        self._wordclouds = []
 
     resultChanged = Signal(list)
-
-    @Property(list, notify=resultChanged)
-    def result(self):
-        return self._result
-    
-    def generate_wordcloud(self, results, service):
-        wordlist = []
-        
-        for image in results.labels:
-            for label in results.labels[image][service]:
-                wordlist.append(label['label'])
-
-        return WordCloud().generate(' '.join(wordlist))
-
+    wordcloudGenerated = Signal(list)
 
     @Slot(list, list)
     def analyse_images(self, url_list, checkboxes):
@@ -49,26 +41,45 @@ class AnalyseImages(QObject):
         if checkboxes[0]:
             google = googlecloud.GoogleCloud(config['google']['service_account_info'])
             services['google'] = google
-
         if checkboxes[1]:
             # ToDo: configure IBM
             pass
-
         if checkboxes[2]:
             azure = azure_vision.Azure(config['azure']['subscription_key'], config['azure']['endpoint'])
             services['azure'] = azure
-
-
         if checkboxes[3]:
-            aws = aws.AWS(config['aws']['api_id'], config['aws']['api_key'], config['aws']["api_region"])
-            services['aws'] = aws
+            amazon = aws.AWS(config['aws']['api_id'], config['aws']['api_key'], config['aws']["api_region"])
+            services['aws'] = amazon
 
         for service in services:
-            self._wordclouds['service'] = generate_wordcloud(results, service)
+            for url in url_list:
+                services[service].process_local(results, url)
+    
+        self._services = services
+        self._results = results
+        self.resultChanged.emit(self._results)
+
+    @Slot()
+    def generate_wordcloud(self):
+        wordlistAll = []
+        cwd = os.getcwd()
+        for service in self._services:
+            wordlist = []
+            for image in self._results.labels:
+                for label in self._results.labels[image][service]:
+                    wordlist.append(label['label'])
+                    wordlistAll.append(label['label'])
+
+            wc = WordCloud().generate(' '.join(wordlist))
+            wc.to_file('{}/wordclouds/{}_wordcloud.png'.format(cwd, service))
+            self._wordclouds.append('{}/wordclouds/{}_wordcloud.png'.format(cwd, service))
         
+        wc = WordCloud().generate(' '.join(wordlistAll))
+        wc.to_file('{}/wordclouds/{}_wordcloud.png'.format(cwd, 'all_services'))
+        self._wordclouds.append('{}/wordclouds/{}_wordcloud.png'.format(cwd,'all_services'))
 
-        self.resultChanged.emit(self._result)
-
+        qt_urls = [("file:///" + path) for path in self._wordclouds]
+        self.wordcloudGenerated.emit(qt_urls)
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
@@ -76,6 +87,7 @@ if __name__ == "__main__":
 
     analyst = AnalyseImages()
     engine.rootContext().setContextProperty("analyseImages", analyst)
+    engine.rootContext().setContextProperty("generateWordcloud", analyst)
 
     qml_file = Path(__file__).resolve().parent / "UI/main.qml"
     engine.load(qml_file)

@@ -79,7 +79,7 @@ Item{
                 var itemList = []
                 for (var i = 0; i < images.count; i++) {
                     var item = images.get(i)
-                    itemList.push(item.imageSource.toString())
+                    itemList.push(item.imageSource.toString().replace("file:///", ""))
                 }
 
                 var checkboxes = [googleBox.checked,
@@ -89,13 +89,24 @@ Item{
 
                 // Send signal to python
                 analyseImages.analyse_images(itemList, checkboxes)
-                console.log(analyseImages)
+                generateWordcloud.generate_wordcloud()
 
                 console.log("Switching to step 3")
                 step2.visible = false
                 step3.visible = true
             }
 
+        }
+
+        Connections {
+            target: generateWordcloud
+            onWordcloudGenerated: function(urls) {
+                wordcloudModel.clear();
+                for(var i = 0; i < urls.length; i++){
+                    console.log(urls[i])
+                    wordcloudModel.append({url : urls[i]});
+                }
+            }
         }
 
         Button{

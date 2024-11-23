@@ -20,19 +20,30 @@ Item{
         id: title
     }
 
-
-    // Placeholder until the code is linked with coslab-core
-    Image{
-        id: wordCloud
+    ListView {
+        id: wordcloudView
         
         anchors.top: title.bottom ; anchors.topMargin: 20
         anchors.right: parent.right ; anchors.rightMargin: 20
         anchors.left: parent.left ; anchors.leftMargin: 20
         anchors.bottom: resultTable.top ; anchors.bottomMargin: 40
 
-        width: 200; height: 200
-        fillMode: Image.PreserveAspectFit
-        source: "https://upload.wikimedia.org/wikipedia/commons/b/b6/Logo_University_of_Helsinki_fi.svg"
+        spacing: 10
+        flickableDirection: Flickable.AutoFlickDirection
+        orientation: Qt.Horizontal
+
+        model: wordcloudModel
+
+        delegate: Item {
+            width: 200
+            height: wordcloudView.height
+            Image {
+                width: 200
+                height: wordcloudView.height
+                source: model.url
+                fillMode: Image.PreserveAspectFit
+            }
+        }
     }
 
 

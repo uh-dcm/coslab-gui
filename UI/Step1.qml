@@ -93,6 +93,7 @@ Item {
                     drop.urls[i].toString().endsWith(".bmp") ||
                     drop.urls[i].toString().endsWith(".gif")) {
                     images.append({"imageSource": drop.urls[i]})
+                    console.log(drop.urls[i])
                 }
             }
         }
