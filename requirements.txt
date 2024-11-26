@@ -3,4 +3,5 @@ PySide6_Addons==6.8.0.1
 PySide6_Essentials==6.8.0.1
 shiboken6==6.8.0.1
 wordcloud
+yaml
 coslab-core
