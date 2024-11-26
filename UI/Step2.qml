@@ -7,6 +7,7 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 import Qt.labs.folderlistmodel
 import QtQuick.Dialogs
+import Qt.labs.qmlmodels
 
 // Templates
 import "."
@@ -90,6 +91,7 @@ Item{
                 // Send signal to python
                 analyseImages.analyse_images(itemList, checkboxes)
                 generateWordcloud.generate_wordcloud()
+                generateScores.generate_scores()
 
                 console.log("Switching to step 3")
                 step2.visible = false
@@ -97,14 +99,29 @@ Item{
             }
 
         }
+
         // Processing wordcloud URLs received from python
         Connections {
             target: generateWordcloud
             onWordcloudGenerated: function(urls) {
                 wordcloudModel.clear();
                 for(var i = 0; i < urls.length; i++){
-                    console.log(urls[i])
                     wordcloudModel.append({url : urls[i]});
+                }
+            }
+        }
+
+        Connections {
+            target: generateScores
+            onScoresGenerated: function(scores) {
+                for(var r = 1; r < score_table.rowCount; r++){
+                    score_table.setRow(r, {
+                        "header": "aws",
+                        "aws": scores[r-1][0],
+                        "azure": scores[r-1][1],
+                        "watson": scores[r-1][2],
+                        "googlecloud": scores[r-1][3],
+                    })
                 }
             }
         }

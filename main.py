@@ -4,13 +4,14 @@ import yaml
 import os
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 from wordcloud import WordCloud
 from pathlib import Path
 
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
-from PySide6.QtCore import QObject, Signal, Slot, QUrl
+from PySide6.QtCore import QObject, Signal, Slot
 
 from coslab import aws
 from coslab import googlecloud
@@ -25,9 +26,13 @@ class AnalyseImages(QObject):
         self._results = taggerresults.TaggerResults()
         self._services = {}
         self._wordclouds = []
+        self._scores = np.zeros((4,4))
 
     resultChanged = Signal(list)
     wordcloudGenerated = Signal(list)
+    scoresGenerated = Signal(list)
+    getScore = Signal(str)
+
 
     @Slot(list, list)
     def analyse_images(self, url_list, checkboxes):
@@ -71,7 +76,7 @@ class AnalyseImages(QObject):
                 for label in self._results.labels[image][service]:
                     wordlist.append(label['label'])
                     wordlistAll.append(label['label'])
-            # Generating service wordcloud
+            # Generating individual service wordcloud
             wc = WordCloud().generate(' '.join(wordlist))
             wc.to_file('{}/wordclouds/{}_wordcloud.png'.format(cwd, service))
             self._wordclouds.append('{}/wordclouds/{}_wordcloud.png'.format(cwd, service))
@@ -83,6 +88,18 @@ class AnalyseImages(QObject):
         qt_urls = [("file:///" + path) for path in self._wordclouds]
         self.wordcloudGenerated.emit(qt_urls)
 
+    @Slot()
+    def generate_scores(self):
+        all_services = ['aws', 'azure', 'watson', 'google']
+        scoresString = [ [ "0" for i in range(5) ] for j in range(4) ]
+        for i, service in enumerate(all_services):
+            for j, other_service in enumerate(all_services):
+                if service in self._services and other_service in self._services:
+                    compared = tag_comparator.compare_tags(self._results, service, other_service, tag_comparator.glove_comparator)
+                    self._scores[i][j] = sum([value[0] for value in compared.values()])
+                    scoresString[i][j] = "{:.2f}".format(self._scores[i][j])
+        self.scoresGenerated.emit(scoresString)
+
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
@@ -90,6 +107,8 @@ if __name__ == "__main__":
     analyst = AnalyseImages()
     engine.rootContext().setContextProperty("analyseImages", analyst)
     engine.rootContext().setContextProperty("generateWordcloud", analyst)
+    engine.rootContext().setContextProperty("generateScores", analyst)
+    engine.rootContext().setContextProperty("getScore", analyst)
 
     qml_file = Path(__file__).resolve().parent / "UI/main.qml"
     engine.load(qml_file)

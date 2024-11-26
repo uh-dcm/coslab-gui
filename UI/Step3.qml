@@ -60,21 +60,7 @@ Item{
         columnSpacing: 1
         rowSpacing: 1
 
-        model: TableModel {
-            TableModelColumn { display: "header" }
-            TableModelColumn { display: "aws" }
-            TableModelColumn { display: "azure" }
-            TableModelColumn { display: "watson" }
-            TableModelColumn { display: "googlecloud" }
-
-            rows: [
-                { "header": "", "aws": "aws", "azure": "azure", "watson": "watson", "googlecloud": "googlecloud" },
-                { "header": "aws", "aws": "Item 1,1", "azure": "Item 1,2", "watson": "Item 1,3", "googlecloud": "Item 1,4" },
-                { "header": "azure", "aws": "Item 2,1", "azure": "Item 2,2", "watson": "Item 2,3", "googlecloud": "Item 2,4" },
-                { "header": "watson", "aws": "Item 3,1", "azure": "Item 3,2", "watson": "Item 3,3", "googlecloud": "Item 3,4" },
-                { "header": "googlecloud", "aws": "Item 4,1", "azure": "Item 4,2", "watson": "Item 4,3", "googlecloud": "Item 4,4" }
-            ]
-        }
+        model: score_table
 
         delegate: Rectangle {
             implicitWidth: resultTable.width / 5
