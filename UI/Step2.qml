@@ -114,9 +114,10 @@ Item{
         Connections {
             target: generateScores
             onScoresGenerated: function(scores) {
+                var services = ["aws", "azure", "watson", "google"]
                 for(var r = 1; r < score_table.rowCount; r++){
                     score_table.setRow(r, {
-                        "header": "aws",
+                        "header": services[r-1],
                         "aws": scores[r-1][0],
                         "azure": scores[r-1][1],
                         "watson": scores[r-1][2],
