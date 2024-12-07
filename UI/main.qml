@@ -28,6 +28,23 @@ ApplicationWindow {
         id: wordcloudModel
     }
 
+    // would be nice to do this more iteratively but QML vexes me
+    ListModel {
+        id: credentials
+        ListElement{
+            name: "azure"
+            attribute1 : ""
+            attribute2 : ""
+
+        }
+        ListElement{
+            name: "aws"
+            attribute1 : ""
+            attribute2 : ""
+            attribute3 : ""
+        }
+    }
+
     // Table model for the scores
     TableModel {
         id: score_table

@@ -32,25 +32,78 @@ Item{
         anchors.left: parent.left ; anchors.leftMargin: 50
         anchors.top: instructions.bottom ; anchors.topMargin: 40
 
-        CheckBox{
-            id: googleBox
-            checked: true
-            text: qsTr("Google Vision AI")
+        Row{
+            CheckBox{
+                id: googleBox
+                checked: false
+                text: qsTr("Google Vision AI")
+            }
+            Text {
+                text: "Please configure the settings in the ok.yaml file."
+                visible: googleBox.checked
+                font.pixelSize: 15
+            }
+            
         }
         CheckBox{
             id: ibmBox
-            checked: true
+            checked: false
+            enabled: false
             text: qsTr("IBM Watson Visual Recognition")
         }
-        CheckBox{
-            id: microsoftBox
-            checked: true
-            text: qsTr("Microsoft Azure Computer Vision")
+        Row{
+            CheckBox{
+                id: microsoftBox
+                checked: false
+                text: qsTr("Microsoft Azure Computer Vision")
+            }
+            TextField {
+                id: microsoftSubscription
+                placeholderText: "Subscription Key"
+                text: credentials.get(0).attribute1.toString()
+                visible: microsoftBox.checked
+                height: parent.height
+                width: 150
+            }
+            TextField {
+                id: microsoftEndpoint
+                placeholderText: "Endpoint"
+                text: credentials.get(0).attribute2.toString()
+                visible: microsoftBox.checked
+                height: parent.height
+                width: 150
+            }
         }
-        CheckBox{
-            id: amazonBox
-            checked: true
-            text: qsTr("Amazon Rekognition")
+        Row{
+            CheckBox{
+                id: amazonBox
+                checked: false
+                text: qsTr("Amazon Rekognition")
+            }
+            TextField {
+                id: amazonID
+                placeholderText: "API ID"
+                text: credentials.get(1).attribute1.toString()
+                visible: amazonBox.checked
+                height: parent.height
+                width: 100
+            }
+            TextField {
+                id: amazonKey
+                placeholderText: "API Key"
+                text: credentials.get(1).attribute2.toString()
+                visible: amazonBox.checked
+                height: parent.height
+                width: 100
+            }
+            TextField {
+                id: amazonRegion
+                placeholderText: "Region"
+                text: credentials.get(1).attribute3.toString()
+                visible: amazonBox.checked
+                height: parent.height
+                width: 100
+            }
         }
 
         Text{
@@ -89,8 +142,14 @@ Item{
                                   microsoftBox.checked,
                                   amazonBox.checked]
 
+                var credentials = [microsoftSubscription.text,
+                                   microsoftEndpoint.text,
+                                   amazonID.text,
+                                   amazonKey.text,
+                                   amazonRegion.text]
+
                 // Send signal to python
-                analyseImages.analyse_images(itemList, checkboxes)
+                analyseImages.analyse_images(itemList, checkboxes, credentials)
                 generateWordcloud.generate_wordcloud()
                 generateScores.generate_scores()
                 

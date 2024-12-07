@@ -58,11 +58,24 @@ Item {
                  Layout.preferredWidth: 60
 
                 onClicked: {
+                    getCredentials.send_credentials()
+
                     console.log("Switching to step 2")
                     step1.visible = false
                     step2.visible = true
                 }
 
+            }
+
+            Connections{
+                target: getCredentials
+                function onSendCredentials(cred){
+                    credentials.set(0, {"attribute1" : cred[0]});
+                    credentials.set(0, {"attribute2" : cred[1]});
+                    credentials.set(1, {"attribute1" : cred[2]});
+                    credentials.set(1, {"attribute2" : cred[3]});
+                    credentials.set(1, {"attribute3" : cred[4]});
+                }
             }
 
             Button {
