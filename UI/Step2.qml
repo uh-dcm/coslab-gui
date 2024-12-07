@@ -77,6 +77,7 @@ Item{
             onClicked: {
 
                 // Converting ListModel so it can be sent to python
+                loadingStatus.visible = true
                 var itemList = []
                 for (var i = 0; i < images.count; i++) {
                     var item = images.get(i)
@@ -92,7 +93,8 @@ Item{
                 analyseImages.analyse_images(itemList, checkboxes)
                 generateWordcloud.generate_wordcloud()
                 generateScores.generate_scores()
-
+                
+                loadingStatus.visible = false
                 console.log("Switching to step 3")
                 step2.visible = false
                 step3.visible = true
@@ -103,7 +105,7 @@ Item{
         // Processing wordcloud URLs received from python
         Connections {
             target: generateWordcloud
-            onWordcloudGenerated: function(urls) {
+            function onWordcloudGenerated(urls) {
                 wordcloudModel.clear();
                 for(var i = 0; i < urls.length; i++){
                     wordcloudModel.append({url : urls[i]});
@@ -113,7 +115,7 @@ Item{
 
         Connections {
             target: generateScores
-            onScoresGenerated: function(scores) {
+            function onScoresGenerated(scores) {
                 var services = ["aws", "azure", "watson", "google"]
                 for(var r = 1; r < score_table.rowCount; r++){
                     score_table.setRow(r, {
@@ -145,4 +147,31 @@ Item{
 
     }
 
+    // This rectangle doesn't actually appear because QML waits for
+    // python to finish all its code before repainting. This would need
+    // to be rethreaded to allow for updates in the GUI
+    Rectangle {
+        id: loadingStatus
+        anchors.centerIn: parent
+        width: 300
+        height: 100
+        color: "gray"
+        border.color: "black"
+        border.width: 2
+        visible: false 
+        
+        Text {
+            id: loadingText
+            anchors.centerIn: parent
+            text: "Loading..."
+            font.pixelSize: 25
+        }
+
+        Connections{
+            target: generateScores 
+            function onStatusUpdated(status){
+                loadingText.text = status
+            }
+        }
+    }
 }

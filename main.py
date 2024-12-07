@@ -11,19 +11,13 @@ from pathlib import Path
 
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
-from PySide6.QtCore import QObject, Signal, Slot
-
-from coslab import aws
-from coslab import googlecloud
-from coslab import azure_vision
-from coslab import taggerresults
-from coslab import tag_comparator
+from PySide6.QtCore import QObject, Signal, Slot, QThread
 
 
 class AnalyseImages(QObject):
     def __init__(self):
         super().__init__()
-        self._results = taggerresults.TaggerResults()
+        self._results = None
         self._services = {}
         self._wordclouds = []
         self._scores = np.zeros((4,4))
@@ -32,10 +26,18 @@ class AnalyseImages(QObject):
     wordcloudGenerated = Signal(list)
     scoresGenerated = Signal(list)
     getScore = Signal(str)
-
+    statusUpdated = Signal(str) # Currently not useful, QML does not repaint
 
     @Slot(list, list)
     def analyse_images(self, url_list, checkboxes):
+        self.statusUpdated.emit("Loading Tag Comparators...")
+        print("Loading tag comparators...")
+        global tag_comparator
+        from coslab import tag_comparator
+        print("Loading tag results...")
+        global taggerresults
+        from coslab import taggerresults
+
         # ToDo: add the possibility to edit this YAML in the GUI
         with open('ok.yaml', 'r') as file:
             config = yaml.safe_load(file)
@@ -44,15 +46,27 @@ class AnalyseImages(QObject):
         services = {}
         # Setting up the services with coslab-core
         if checkboxes[0]:
+            self.statusUpdated.emit("Loading Google Vision...")
+            print("Loading Google Vision...")
+            global googlecloud
+            from coslab import googlecloud
             google = googlecloud.GoogleCloud(config['google']['service_account_info'])
             services['google'] = google
         if checkboxes[1]:
             # ToDo: configure IBM
             pass
         if checkboxes[2]:
+            self.statusUpdated.emit("Loading Azure Vision...")
+            print("Loading Azure Vision...")
+            global azure_vision
+            from coslab import azure_vision
             azure = azure_vision.Azure(config['azure']['subscription_key'], config['azure']['endpoint'])
             services['azure'] = azure
         if checkboxes[3]:
+            self.statusUpdated.emit("Loading Amazon Web Service...")
+            print("Loading Amazon Web Service...")
+            global aws
+            from coslab import aws
             amazon = aws.AWS(config['aws']['api_id'], config['aws']['api_key'], config['aws']["api_region"])
             services['aws'] = amazon
         # Processing data
@@ -77,9 +91,11 @@ class AnalyseImages(QObject):
                     wordlist.append(label['label'])
                     wordlistAll.append(label['label'])
             # Generating individual service wordcloud
+            print("Creating wordcloud for service: {}".format(service))
             wc = WordCloud().generate(' '.join(wordlist))
             wc.to_file('{}/wordclouds/{}_wordcloud.png'.format(cwd, service))
             self._wordclouds.append('{}/wordclouds/{}_wordcloud.png'.format(cwd, service))
+        print("Generating global wordlist...")
         # Generating all services wordcloud
         wc = WordCloud().generate(' '.join(wordlistAll))
         wc.to_file('{}/wordclouds/{}_wordcloud.png'.format(cwd, 'all_services'))
@@ -105,6 +121,7 @@ if __name__ == "__main__":
     engine = QQmlApplicationEngine()
 
     analyst = AnalyseImages()
+
     engine.rootContext().setContextProperty("analyseImages", analyst)
     engine.rootContext().setContextProperty("generateWordcloud", analyst)
     engine.rootContext().setContextProperty("generateScores", analyst)
