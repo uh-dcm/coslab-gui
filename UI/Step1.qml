@@ -43,7 +43,7 @@ Item {
                 id: btAddInternet
                 text: qsTr("Add Images from the Internet")
 
-                onClicked: console.log(  c )
+                onClicked: textDialog.open()
             }
         }
 
