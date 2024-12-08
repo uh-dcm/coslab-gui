@@ -5,6 +5,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 from wordcloud import WordCloud
 from pathlib import Path
@@ -137,12 +138,8 @@ if __name__ == "__main__":
 
     analyst = AnalyseImages()
 
-    engine.rootContext().setContextProperty("getCredentials", analyst)
-    engine.rootContext().setContextProperty("analyseImages", analyst)
-    engine.rootContext().setContextProperty("generateWordcloud", analyst)
-    engine.rootContext().setContextProperty("generateScores", analyst)
-    engine.rootContext().setContextProperty("getScore", analyst)
-
+    engine.rootContext().setContextProperty("backend", analyst)
+    
     qml_file = Path(__file__).resolve().parent / "UI/main.qml"
     engine.load(qml_file)
     if not engine.rootObjects():

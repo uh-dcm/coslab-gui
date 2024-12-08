@@ -149,9 +149,9 @@ Item{
                                    amazonRegion.text]
 
                 // Send signal to python
-                analyseImages.analyse_images(itemList, checkboxes, credentials)
-                generateWordcloud.generate_wordcloud()
-                generateScores.generate_scores()
+                backend.analyse_images(itemList, checkboxes, credentials)
+                backend.generate_wordcloud()
+                backend.generate_scores()
                 
                 loadingStatus.visible = false
                 console.log("Switching to step 3")
@@ -163,7 +163,7 @@ Item{
 
         // Processing wordcloud URLs received from python
         Connections {
-            target: generateWordcloud
+            target: backend
             function onWordcloudGenerated(urls) {
                 wordcloudModel.clear();
                 for(var i = 0; i < urls.length; i++){
@@ -173,7 +173,7 @@ Item{
         }
 
         Connections {
-            target: generateScores
+            target: backend
             function onScoresGenerated(scores) {
                 var services = ["aws", "azure", "watson", "google"]
                 for(var r = 1; r < score_table.rowCount; r++){
@@ -227,7 +227,7 @@ Item{
         }
 
         Connections{
-            target: generateScores 
+            target: backend 
             function onStatusUpdated(status){
                 loadingText.text = status
             }

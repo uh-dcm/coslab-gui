@@ -58,7 +58,7 @@ Item {
                  Layout.preferredWidth: 60
 
                 onClicked: {
-                    getCredentials.send_credentials()
+                    backend.send_credentials()
 
                     console.log("Switching to step 2")
                     step1.visible = false
@@ -68,7 +68,7 @@ Item {
             }
 
             Connections{
-                target: getCredentials
+                target: backend
                 function onSendCredentials(cred){
                     credentials.set(0, {"attribute1" : cred[0]});
                     credentials.set(0, {"attribute2" : cred[1]});
