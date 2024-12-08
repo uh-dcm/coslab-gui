@@ -170,7 +170,7 @@ Item {
         id: fileDialog
     }
 
-    FileDialog{
+    FileDialogCustom{
         id: textDialog
     }
 }
