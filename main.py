@@ -31,6 +31,7 @@ class AnalyseImages(QObject):
     getScore = Signal(str)
     statusUpdated = Signal(str) # Currently not useful, QML does not repaint
 
+
     @Slot()
     def send_credentials(self):
         with open('ok.yaml', 'r') as file:
@@ -132,6 +133,10 @@ class AnalyseImages(QObject):
                     scoresString[i][j] = "{:.2f}".format(self._scores[i][j])
         self.scoresGenerated.emit(scoresString)
 
+    @Slot(bool, bool, bool, bool, bool, str)
+    def export(self, wc, comp, comma, pickl, js, location):
+        print(wc, comp, comma, pickl, js, location)
+
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
@@ -139,7 +144,7 @@ if __name__ == "__main__":
     analyst = AnalyseImages()
 
     engine.rootContext().setContextProperty("backend", analyst)
-    
+
     qml_file = Path(__file__).resolve().parent / "UI/main.qml"
     engine.load(qml_file)
     if not engine.rootObjects():
