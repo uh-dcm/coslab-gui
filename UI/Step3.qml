@@ -1,4 +1,5 @@
 import QtQuick
+import QtCore
 import QtQuick.Window
 
 // Libraries
@@ -89,6 +90,8 @@ Item{
 
             Layout.fillWidth: true
             Layout.preferredWidth: 60
+
+            onClicked: exportDialog.open()
             }
 
         Button{
@@ -106,4 +109,58 @@ Item{
         }
     }
 
+    Dialog{
+    id: exportDialog
+    title: "Export Results"
+    standardButtons: Dialog.Close | Dialog.Save
+    anchors.centerIn: parent
+
+        GridLayout{
+            id: exportOptions
+            anchors.centerIn: parent
+            columns: 2
+            rowSpacing: 10
+            columnSpacing: 10
+
+            CheckBox {
+                id: wc
+                checked: false
+                text: "Wordclouds"
+            }
+            CheckBox {
+                id: comp
+                checked: false
+                text: "Comparison Table"
+            }
+            CheckBox {
+                id: csv
+                checked: false
+                text: "CSV"
+            }
+            CheckBox {
+                id: pickle
+                checked: false
+                text: "Pickles"
+            }
+            CheckBox {
+                id: json
+                checked: false
+                text: "JSON"
+            }
+        }
+
+        onAccepted: {
+            exportFolder.open()
+        }
+    }
+
+    FolderDialog{
+        id: exportFolder
+        title: "Select a Folder"
+        options: FolderDialog.ShowDirsOnly
+        onAccepted: {
+            backend.export(wc.checked, comp.checked, csv.checked, pickle.checked, json.checked, currentFolder)
+        }
+    }
 }
+
