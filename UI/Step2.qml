@@ -18,16 +18,17 @@ Item{
         id: title
     }
 
+    // subtitle
     Text{
         id: instructions
         anchors.top: title.bottom ; anchors.topMargin: 20
         anchors.left: parent.left ; anchors.leftMargin: 30
         anchors.right: parent.right ; anchors.rightMargin: 30
         font.pixelSize: 20
-        // ToDo: make the image counter work
         text: qsTr("Ready to analyse %1 images.\nChoose services for image labelling.").arg( images.count )
     }
 
+    // checkboxes for service selection
     ColumnLayout{
         anchors.left: parent.left ; anchors.leftMargin: 50
         anchors.top: instructions.bottom ; anchors.topMargin: 40
@@ -113,6 +114,7 @@ Item{
         }
     }
 
+    // buttons to continue or return
     RowLayout{
         spacing: 20
         anchors.left: parent.left ; anchors.leftMargin: 20
@@ -172,6 +174,7 @@ Item{
             }
         }
 
+        // creating score tables
         Connections {
             target: backend
             function onScoresGenerated(scores) {

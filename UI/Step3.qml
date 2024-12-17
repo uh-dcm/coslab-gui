@@ -21,6 +21,7 @@ Item{
         id: title
     }
 
+    // List of wordclouds
     ListView {
         id: wordcloudView
         
@@ -47,7 +48,7 @@ Item{
         }
     }
 
-
+    // Table of service scores
     TableView {
         id: resultTable
 
@@ -76,7 +77,7 @@ Item{
         }
     }
 
-
+    // Buttons for exporting or returning
     RowLayout{
         id: buttonRow
         spacing: 20
@@ -109,6 +110,7 @@ Item{
         }
     }
 
+    // Dialog box with checkboxes for which exports should be done
     Dialog{
     id: exportDialog
     title: "Export Results"
@@ -159,6 +161,7 @@ Item{
         }
     }
 
+    // Opens folder dialog to select where images will be saved
     FolderDialog{
         id: exportFolder
         title: "Select a Folder"

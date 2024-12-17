@@ -14,6 +14,7 @@ from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtCore import QObject, Signal, Slot
 
+# Creates yaml in case none is detected
 def createYAML():
     config = {'azure' : {'subscription_key' : None,
                         'endpoint' : None},
@@ -54,7 +55,7 @@ class AnalyseImages(QObject):
 
     @Slot()
     def send_credentials(self):
-
+        # Attempt to open yaml configuration file with default name ok.yaml
         try:
             with open('ok.yaml', 'r') as file:
                 self._config = yaml.safe_load(file)
@@ -64,17 +65,18 @@ class AnalyseImages(QObject):
             with open('ok.yaml', 'r') as file:
                 self._config = yaml.safe_load(file)
 
+        # This is used to display the keys in the GUI later
         config_list = [self._config['azure']['subscription_key'],
                        self._config['azure']['endpoint'],
                        self._config['aws']['api_id'],
                        self._config['aws']['api_key'],
                        self._config['aws']['api_region']]
-
         self.sendCredentials.emit(config_list)
 
 
     @Slot(list, list, list)
     def analyse_images(self, url_list, checkboxes, credentials):
+        # Begin loading coslab_core
         self.statusUpdated.emit("Loading Tag Comparators...")
         print("Loading tag comparators...")
         global tag_comparator
@@ -161,6 +163,7 @@ class AnalyseImages(QObject):
         self.scoresGenerated.emit(scoresString)
 
     #ToDo: create export functions for each of the user selected options
+    # the path selected by the user in the GUI is received as "location"
     @Slot(bool, bool, bool, bool, bool, bool, str)
     def export(self, wc, comp, comma, pickl, js, excel, location):
         # Word cloud export
