@@ -14,6 +14,27 @@ from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtCore import QObject, Signal, Slot
 
+def createYAML():
+    config = {'azure' : {'subscription_key' : None,
+                        'endpoint' : None},
+              'aws' : {'api_id' : None,
+                       'api_key' : None,
+                       'api_region': None},
+              'google' : {'service_account_info' : {'type' : None,
+                                                     'project_id' : None,
+                                                     'private_key_id' : None,
+                                                     'private_key' : None,
+                                                     'client_email': None,
+                                                     'client_id' : None,
+                                                     'auth_uri' : None,
+                                                     'token_uri' : None,
+                                                     'auth_provider_x509_cert_url' : None,
+                                                     'client_x509_cert_url' : None,
+                                                     'universe_domain' : None}}
+             # Other credentials can be added in this dict of dicts
+             }
+    with open('ok.yaml', 'w') as yaml_file:
+        yaml.dump(config, yaml_file, default_flow_style=False)
 
 class AnalyseImages(QObject):
     def __init__(self):
@@ -31,11 +52,17 @@ class AnalyseImages(QObject):
     getScore = Signal(str)
     statusUpdated = Signal(str) # Currently not useful, QML does not repaint
 
-
     @Slot()
     def send_credentials(self):
-        with open('ok.yaml', 'r') as file:
-            self._config = yaml.safe_load(file)
+
+        try:
+            with open('ok.yaml', 'r') as file:
+                self._config = yaml.safe_load(file)
+        except FileNotFoundError:
+            self._config = createYAML()
+            # File has to be reopened otherwise python gets angry. Optmise this at your own peril
+            with open('ok.yaml', 'r') as file:
+                self._config = yaml.safe_load(file)
 
         config_list = [self._config['azure']['subscription_key'],
                        self._config['azure']['endpoint'],
@@ -133,9 +160,27 @@ class AnalyseImages(QObject):
                     scoresString[i][j] = "{:.2f}".format(self._scores[i][j])
         self.scoresGenerated.emit(scoresString)
 
-    @Slot(bool, bool, bool, bool, bool, str)
-    def export(self, wc, comp, comma, pickl, js, location):
-        print(wc, comp, comma, pickl, js, location)
+    #ToDo: create export functions for each of the user selected options
+    @Slot(bool, bool, bool, bool, bool, bool, str)
+    def export(self, wc, comp, comma, pickl, js, excel, location):
+        # Word cloud export
+        if wc:
+            pass
+        # Comparison table export
+        if comp:
+            pass
+        # CSV export
+        if comma:
+            pass
+        # Pickle export
+        if pickl:
+            pass
+        # JSON export
+        if js:
+            pass
+        # Excel export
+        if excel:
+            pass
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
