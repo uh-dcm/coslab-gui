@@ -26,7 +26,7 @@ ApplicationWindow {
         property var azure_endpoint
         property var aws_api_id
         property var aws_api_key
-        property var aws_region
+        property var aws_api_region
         property var google_service_account_info
 
     }

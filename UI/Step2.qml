@@ -144,14 +144,14 @@ Item{
                 var itemList = []
                 for (var i = 0; i < images.count; i++) {
                     var item = images.get(i)
-                    itemList.push(item.imageSource.toString().replace("file:///", ""))
+                    itemList.push(item.imageSource.toString().replace("file://", "")) // TODO: check across operating systems
                 }
 
                 var checkboxes = [googleBox.checked,
                                 false,
                                   microsoftBox.checked,
                                   amazonBox.checked]
-                                  
+
                 // Send signal to python
                 backend.analyse_images(itemList, checkboxes)
                 backend.generate_wordcloud()

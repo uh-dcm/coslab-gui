@@ -3,6 +3,8 @@ import sys
 import yaml
 import os
 
+import tempfile
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -85,8 +87,8 @@ class AnalyseImages(QObject):
 
     @Slot()
     def generate_wordcloud(self):
+        self._wordclouds.clear() ## empty results first
         wordlistAll = []
-        cwd = os.getcwd() # Python and QML run in different folders so getting the full path is necessary
         # Iterating through selected services
         for service in self._services:
             wordlist = []
@@ -94,19 +96,22 @@ class AnalyseImages(QObject):
             for image in self._results.labels:
                 for label in self._results.labels[image][service]:
                     wordlist.append(label['label'])
+                    print(label['label'] )
                     wordlistAll.append(label['label'])
             # Generating individual service wordcloud
-            print("Creating wordcloud for service: {}".format(service))
-            wc = WordCloud().generate(' '.join(wordlist))
-            wc.to_file('{}/wordclouds/{}_wordcloud.png'.format(cwd, service))
-            self._wordclouds.append('{}/wordclouds/{}_wordcloud.png'.format(cwd, service))
+            print("Creating wordcloud for service: {}".format(service))  ## TODO: Check if delete=False is good here
+            wc = WordCloud( background_color = "white" ).generate(' '.join(wordlist))
+            tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+            wc.to_file( tmp.name )
+            self._wordclouds.append( tmp.name )
         print("Generating global wordlist...")
         # Generating all services wordcloud
-        wc = WordCloud().generate(' '.join(wordlistAll))
-        wc.to_file('{}/wordclouds/{}_wordcloud.png'.format(cwd, 'all_services'))
-        self._wordclouds.append('{}/wordclouds/{}_wordcloud.png'.format(cwd,'all_services'))
+        wc = WordCloud( background_color = "white" ).generate(' '.join(wordlistAll))
+        tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False) ## TODO: Check if delete=False is good here
+        wc.to_file( tmp.name )
+        self._wordclouds.append( tmp.name )
         # Sending signal to QML with generated files
-        qt_urls = [("file:///" + path) for path in self._wordclouds]
+        qt_urls = [("file://" + path) for path in self._wordclouds]
         self.wordcloudGenerated.emit(qt_urls)
 
     @Slot()
