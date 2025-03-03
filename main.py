@@ -3,6 +3,8 @@ import sys
 import yaml
 import os
 
+import shutil
+
 import tempfile
 
 import matplotlib.pyplot as plt
@@ -118,28 +120,28 @@ class AnalyseImages(QObject):
                     scoresString[i][j] = "{:.2f}".format(self._scores[i][j])
         self.scoresGenerated.emit(scoresString)
 
-    #ToDo: create export functions for each of the user selected options
-    # the path selected by the user in the GUI is received as "location"
     @Slot(bool, bool, bool, bool, bool, bool, str)
     def export(self, wc, comp, comma, pickl, js, excel, location):
+        location = location.replace('file://', '')
         # Word cloud export
         if wc:
-            pass
+            for number, file in enumerate( self._wordclouds ):
+                shutil.copy( file, f"{location}/wordcloud-{number+1}.png" )
         # Comparison table export
         if comp:
-            pass
+            pass ## TODO: add comparsion table export
         # CSV export
         if comma:
-            pass
+            self._results.export_csv( f"{location}/results.csv")
         # Pickle export
         if pickl:
-            pass
+            self._results.export_pickle( f"{location}/results.pickle")
         # JSON export
         if js:
-            pass
+            pass ## TODO: add JSON export to the library
         # Excel export
         if excel:
-            pass
+            pass ## TODO: add excel export to the library
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)

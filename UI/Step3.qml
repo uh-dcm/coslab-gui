@@ -128,11 +128,11 @@ Item{
                 checked: false
                 text: "Wordclouds"
             }
-            CheckBox {
-                id: comp
-                checked: false
-                text: "Comparison Table"
-            }
+            //CheckBox {
+            //    id: comp
+            //    checked: false
+            //    text: "Comparison Table"
+            //}
             CheckBox {
                 id: csv
                 checked: false
@@ -141,18 +141,18 @@ Item{
             CheckBox {
                 id: pickle
                 checked: false
-                text: "Pickles"
+                text: "Pickle"
             }
-            CheckBox {
-                id: json
-                checked: false
-                text: "JSON"
-            }
-            CheckBox {
-                id: excel
-                checked: false
-                text: "Excel"
-            }
+            //CheckBox {
+            //    id: json
+            //    checked: false
+            //    text: "JSON"
+            //}
+            //CheckBox {
+            //    id: excel
+            //    checked: false
+            //    text: "Excel"
+            //}
         }
 
         onAccepted: {
@@ -166,7 +166,7 @@ Item{
         title: "Select a Folder"
         options: FolderDialog.ShowDirsOnly
         onAccepted: {
-            backend.export(wc.checked, comp.checked, csv.checked, pickle.checked, json.checked, excel.checked, currentFolder)
+            backend.export(wc.checked, false, csv.checked, pickle.checked, false, false, currentFolder)
         }
     }
 }
