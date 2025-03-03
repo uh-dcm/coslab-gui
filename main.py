@@ -96,13 +96,26 @@ class AnalyseImages(QObject):
                     wordlistAll.append(label['label'])
             # Generating individual service wordcloud 
             wc = WordCloud( background_color = "white" ).generate(' '.join(wordlist))
+            
+            plt.clf()
+            plt.imshow( wc, interpolation='bilinear')
+            plt.axis( "off" )
+            plt.title( service )
+
             tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)  ## TODO: Check if delete=False is good here
-            wc.to_file( tmp.name )
+            plt.savefig( tmp.name, bbox_inches='tight' )
             self._wordclouds.append( tmp.name )
         # Generating all services wordcloud
+       
         wc = WordCloud( background_color = "white" ).generate(' '.join(wordlistAll))
+
+        plt.clf()
+        plt.imshow( wc, interpolation='bilinear')
+        plt.axis( "off" )
+        plt.title( "All services" )
+
         tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False) ## TODO: Check if delete=False is good here
-        wc.to_file( tmp.name )
+        plt.savefig( tmp.name, bbox_inches='tight' )
         self._wordclouds.append( tmp.name )
         # Sending signal to QML with generated files
         qt_urls = [("file://" + path) for path in self._wordclouds]
