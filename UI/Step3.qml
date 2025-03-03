@@ -111,10 +111,10 @@ Item{
 
     // Dialog box with checkboxes for which exports should be done
     Dialog{
-    id: exportDialog
-    title: "Export Results"
-    standardButtons: Dialog.Close | Dialog.Save
-    anchors.centerIn: parent
+        id: exportDialog
+        title: "Export Results"
+        standardButtons: Dialog.Close | Dialog.Save
+        anchors.centerIn: parent
 
         GridLayout{
             id: exportOptions

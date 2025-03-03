@@ -110,7 +110,7 @@ class AnalyseImages(QObject):
 
     @Slot()
     def generate_scores(self):
-        all_services = ['aws', 'azure', 'watson', 'google']
+        all_services = ['aws', 'azure', 'google']
         scoresString = [ [ "0" for i in range(5) ] for j in range(4) ]
         for i, service in enumerate(all_services):
             for j, other_service in enumerate(all_services):
