@@ -2,9 +2,9 @@
 import sys
 import yaml
 import os
+import json
 
 import shutil
-
 import tempfile
 
 import matplotlib.pyplot as plt
@@ -49,7 +49,7 @@ class AnalyseImages(QObject):
             self.statusUpdated.emit("Loading Google Vision...")
             global googlecloud
             from coslab import googlecloud
-            google = googlecloud.GoogleCloud( self._config.value("google_service_account_info") )
+            google = googlecloud.GoogleCloud( json.loads(self._config.value("google_service_account_info")) )
             services['google'] = google
         if checkboxes[1]:
             # ToDo: configure IBM
