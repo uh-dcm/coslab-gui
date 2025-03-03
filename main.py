@@ -12,30 +12,7 @@ from pathlib import Path
 
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
-from PySide6.QtCore import QObject, Signal, Slot
-
-# Creates yaml in case none is detected
-def createYAML():
-    config = {'azure' : {'subscription_key' : None,
-                        'endpoint' : None},
-              'aws' : {'api_id' : None,
-                       'api_key' : None,
-                       'api_region': None},
-              'google' : {'service_account_info' : {'type' : None,
-                                                     'project_id' : None,
-                                                     'private_key_id' : None,
-                                                     'private_key' : None,
-                                                     'client_email': None,
-                                                     'client_id' : None,
-                                                     'auth_uri' : None,
-                                                     'token_uri' : None,
-                                                     'auth_provider_x509_cert_url' : None,
-                                                     'client_x509_cert_url' : None,
-                                                     'universe_domain' : None}}
-             # Other credentials can be added in this dict of dicts
-             }
-    with open('ok.yaml', 'w') as yaml_file:
-        yaml.dump(config, yaml_file, default_flow_style=False)
+from PySide6.QtCore import QObject, Signal, Slot, QSettings
 
 class AnalyseImages(QObject):
     def __init__(self):
@@ -44,38 +21,16 @@ class AnalyseImages(QObject):
         self._services = {}
         self._wordclouds = []
         self._scores = np.zeros((4,4))
-        self._config = []
+        self._config = QSettings('UH-DCM', 'coslab-gui')
 
-    sendCredentials = Signal(list)
     resultChanged = Signal(list)
     wordcloudGenerated = Signal(list)
     scoresGenerated = Signal(list)
     getScore = Signal(str)
     statusUpdated = Signal(str) # Currently not useful, QML does not repaint
 
-    @Slot()
-    def send_credentials(self):
-        # Attempt to open yaml configuration file with default name ok.yaml
-        try:
-            with open('ok.yaml', 'r') as file:
-                self._config = yaml.safe_load(file)
-        except FileNotFoundError:
-            self._config = createYAML()
-            # File has to be reopened otherwise python gets angry. Optmise this at your own peril
-            with open('ok.yaml', 'r') as file:
-                self._config = yaml.safe_load(file)
-
-        # This is used to display the keys in the GUI later
-        config_list = [self._config['azure']['subscription_key'],
-                       self._config['azure']['endpoint'],
-                       self._config['aws']['api_id'],
-                       self._config['aws']['api_key'],
-                       self._config['aws']['api_region']]
-        self.sendCredentials.emit(config_list)
-
-
-    @Slot(list, list, list)
-    def analyse_images(self, url_list, checkboxes, credentials):
+    @Slot(list, list)
+    def analyse_images(self, url_list, checkboxes):
         # Begin loading coslab_core
         self.statusUpdated.emit("Loading Tag Comparators...")
         print("Loading tag comparators...")
@@ -93,7 +48,7 @@ class AnalyseImages(QObject):
             print("Loading Google Vision...")
             global googlecloud
             from coslab import googlecloud
-            google = googlecloud.GoogleCloud(self._config['google']['service_account_info'])
+            google = googlecloud.GoogleCloud( self._config.value("google_service_account_info") )
             services['google'] = google
         if checkboxes[1]:
             # ToDo: configure IBM
@@ -103,17 +58,21 @@ class AnalyseImages(QObject):
             print("Loading Azure Vision...")
             global azure_vision
             from coslab import azure_vision
-            azure = azure_vision.Azure(credentials[0],
-                                       credentials[1])
+            azure = azure_vision.Azure(
+                self._config.value("azure_azure_subscription_key") ,
+                self._config.value("azure_endpoint")
+            )
             services['azure'] = azure
         if checkboxes[3]:
             self.statusUpdated.emit("Loading Amazon Web Service...")
             print("Loading Amazon Web Service...")
             global aws
             from coslab import aws
-            amazon = aws.AWS(credentials[2],
-                             credentials[3],
-                             credentials[4])
+            amazon = aws.AWS(
+                self._config.value("aws_api_id") ,
+                self._config.value("aws_api_key"),
+                self._config.value("aws_api_region")
+            )
             services['aws'] = amazon
         # Processing data
         for service in services:
@@ -188,6 +147,9 @@ class AnalyseImages(QObject):
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
+
+    app.setOrganizationName('UH-DCM')
+    app.setApplicationName('coslab-gui')
 
     analyst = AnalyseImages()
 

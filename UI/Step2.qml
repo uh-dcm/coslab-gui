@@ -39,18 +39,17 @@ Item{
                 checked: false
                 text: qsTr("Google Vision AI")
             }
-            Text {
-                text: "Please configure the settings in the ok.yaml file."
+            TextField {
+                id: googleService_account_info
+                placeholderText: "Service account info"
+                text: service_settings.google_service_account_info
                 visible: googleBox.checked
-                font.pixelSize: 15
-            }
-            
-        }
-        CheckBox{
-            id: ibmBox
-            checked: false
-            enabled: false
-            text: qsTr("IBM Watson Visual Recognition")
+                height: parent.height
+                width: 300
+                onTextChanged: {
+                    service_settings.google_service_account_info = text
+                }
+            }          
         }
         Row{
             CheckBox{
@@ -61,18 +60,24 @@ Item{
             TextField {
                 id: microsoftSubscription
                 placeholderText: "Subscription Key"
-                text: credentials.get(0).attribute1.toString()
+                text: service_settings.azure_subscription_key
                 visible: microsoftBox.checked
                 height: parent.height
                 width: 150
+                onTextChanged: {
+                    service_settings.azure_subscription_key = text
+                }
             }
             TextField {
                 id: microsoftEndpoint
                 placeholderText: "Endpoint"
-                text: credentials.get(0).attribute2.toString()
+                text: service_settings.azure_endpoint
                 visible: microsoftBox.checked
                 height: parent.height
                 width: 150
+                onTextChanged: {
+                    service_settings.azure_endpoint = text
+                }
             }
         }
         Row{
@@ -84,33 +89,36 @@ Item{
             TextField {
                 id: amazonID
                 placeholderText: "API ID"
-                text: credentials.get(1).attribute1.toString()
+                text: service_settings.aws_api_id
                 visible: amazonBox.checked
                 height: parent.height
                 width: 100
+                onTextChanged: {
+                    service_settings.aws_api_id = text
+                }
             }
             TextField {
                 id: amazonKey
                 placeholderText: "API Key"
-                text: credentials.get(1).attribute2.toString()
+                text: service_settings.aws_api_key
                 visible: amazonBox.checked
                 height: parent.height
                 width: 100
+                onTextChanged: {
+                    service_settings.aws_api_key = text
+                }
             }
             TextField {
                 id: amazonRegion
                 placeholderText: "Region"
-                text: credentials.get(1).attribute3.toString()
+                text: service_settings.aws_api_region
                 visible: amazonBox.checked
                 height: parent.height
                 width: 100
+                onTextChanged: {
+                    service_settings.aws_api_region = text
+                }
             }
-        }
-
-        Text{
-            id: estimative
-            text: qsTr("Estimated total cost: [total cost] euros")
-
         }
     }
 
@@ -124,7 +132,7 @@ Item{
         Button{
             id: btAnayliseServices
             // ToDo: Make the image count work
-            text: qsTr("Analyse All %1 Images").arg( images.count )
+            text: qsTr("Analyse %1 images").arg( images.count )
 
             Layout.fillWidth: true
             Layout.preferredWidth: 60
@@ -140,18 +148,12 @@ Item{
                 }
 
                 var checkboxes = [googleBox.checked,
-                                  ibmBox.checked,
+                                false,
                                   microsoftBox.checked,
                                   amazonBox.checked]
-
-                var credentials = [microsoftSubscription.text,
-                                   microsoftEndpoint.text,
-                                   amazonID.text,
-                                   amazonKey.text,
-                                   amazonRegion.text]
-
+                                  
                 // Send signal to python
-                backend.analyse_images(itemList, checkboxes, credentials)
+                backend.analyse_images(itemList, checkboxes)
                 backend.generate_wordcloud()
                 backend.generate_scores()
                 
@@ -199,8 +201,6 @@ Item{
             Layout.preferredWidth: 25
 
             onClicked: {
-
-                console.log("Switching to step 1")
                 step2.visible = false
                 step1.visible = true
             }

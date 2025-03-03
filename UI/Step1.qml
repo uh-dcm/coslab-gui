@@ -36,7 +36,6 @@ Item {
                 text: qsTr("Add Images from Local Machine")
                 onClicked: fileDialog.open()
                 Layout.fillWidth: true
-
             }
 
             Button{
@@ -52,14 +51,14 @@ Item {
 
             Button{
                 id: btAnalyseAll
-                text: qsTr("Analyse All %1 Images").arg( images.count )
+                text: qsTr("Analyse %1 images").arg( images.count )
+                enabled: images.count > 0
+        
 
-                 Layout.fillWidth: true
-                 Layout.preferredWidth: 60
+                Layout.fillWidth: true
+                Layout.preferredWidth: 60
 
                 onClicked: {
-                    backend.send_credentials()
-
                     console.log("Switching to step 2")
                     step1.visible = false
                     step2.visible = true
@@ -67,26 +66,16 @@ Item {
 
             }
 
-            Connections{
-                target: backend
-                function onSendCredentials(cred){
-                    credentials.set(0, {"attribute1" : cred[0]});
-                    credentials.set(0, {"attribute2" : cred[1]});
-                    credentials.set(1, {"attribute1" : cred[2]});
-                    credentials.set(1, {"attribute2" : cred[3]});
-                    credentials.set(1, {"attribute3" : cred[4]});
-                }
-            }
-
             Button {
                 id: btRemoveAll
-                text: qsTr("Remove All " + imageListView.count + " Images")
+                text: qsTr("Remove all images")
+                enabled: images.count > 0
 
                 Layout.fillWidth: true
                 Layout.preferredWidth: 25
 
                 onClicked: {
-                    imageModel.clear()
+                    images.clear()
                 }
             }
         }

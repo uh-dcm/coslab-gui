@@ -1,3 +1,4 @@
+import QtCore
 import QtQuick
 import QtQuick.Window
 
@@ -19,6 +20,17 @@ ApplicationWindow {
     height: 480
     title: qsTr("coslab-gui")
 
+     Settings {
+        id: service_settings
+        property var azure_subscription_key
+        property var azure_endpoint
+        property var aws_api_id
+        property var aws_api_key
+        property var aws_region
+        property var google_service_account_info
+
+    }
+
     // the list for all images
     ListModel {
         id: images
@@ -26,23 +38,6 @@ ApplicationWindow {
     // List for generated wordclouds
     ListModel {
         id: wordcloudModel
-    }
-
-    // would be nice to do this more iteratively but QML vexes me
-    ListModel {
-        id: credentials
-        ListElement{
-            name: "azure"
-            attribute1 : ""
-            attribute2 : ""
-
-        }
-        ListElement{
-            name: "aws"
-            attribute1 : ""
-            attribute2 : ""
-            attribute3 : ""
-        }
     }
 
     // Table model for the scores
