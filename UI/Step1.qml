@@ -59,7 +59,6 @@ Item {
                 Layout.preferredWidth: 60
 
                 onClicked: {
-                    console.log("Switching to step 2")
                     step1.visible = false
                     step2.visible = true
                 }
@@ -95,7 +94,6 @@ Item {
                     drop.urls[i].toString().endsWith(".bmp") ||
                     drop.urls[i].toString().endsWith(".gif")) {
                     images.append({"imageSource": drop.urls[i]})
-                    console.log(drop.urls[i])
                 }
             }
         }

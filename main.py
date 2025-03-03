@@ -35,10 +35,8 @@ class AnalyseImages(QObject):
     def analyse_images(self, url_list, checkboxes):
         # Begin loading coslab_core
         self.statusUpdated.emit("Loading Tag Comparators...")
-        print("Loading tag comparators...")
         global tag_comparator
         from coslab import tag_comparator
-        print("Loading tag results...")
         global taggerresults
         from coslab import taggerresults
 
@@ -47,7 +45,6 @@ class AnalyseImages(QObject):
         # Setting up the services with coslab-core
         if checkboxes[0]:
             self.statusUpdated.emit("Loading Google Vision...")
-            print("Loading Google Vision...")
             global googlecloud
             from coslab import googlecloud
             google = googlecloud.GoogleCloud( self._config.value("google_service_account_info") )
@@ -57,7 +54,6 @@ class AnalyseImages(QObject):
             pass
         if checkboxes[2]:
             self.statusUpdated.emit("Loading Azure Vision...")
-            print("Loading Azure Vision...")
             global azure_vision
             from coslab import azure_vision
             azure = azure_vision.Azure(
@@ -67,7 +63,6 @@ class AnalyseImages(QObject):
             services['azure'] = azure
         if checkboxes[3]:
             self.statusUpdated.emit("Loading Amazon Web Service...")
-            print("Loading Amazon Web Service...")
             global aws
             from coslab import aws
             amazon = aws.AWS(
@@ -96,15 +91,12 @@ class AnalyseImages(QObject):
             for image in self._results.labels:
                 for label in self._results.labels[image][service]:
                     wordlist.append(label['label'])
-                    print(label['label'] )
                     wordlistAll.append(label['label'])
-            # Generating individual service wordcloud
-            print("Creating wordcloud for service: {}".format(service))  ## TODO: Check if delete=False is good here
+            # Generating individual service wordcloud 
             wc = WordCloud( background_color = "white" ).generate(' '.join(wordlist))
-            tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+            tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False)  ## TODO: Check if delete=False is good here
             wc.to_file( tmp.name )
             self._wordclouds.append( tmp.name )
-        print("Generating global wordlist...")
         # Generating all services wordcloud
         wc = WordCloud( background_color = "white" ).generate(' '.join(wordlistAll))
         tmp = tempfile.NamedTemporaryFile(suffix='.png', delete=False) ## TODO: Check if delete=False is good here

@@ -103,7 +103,6 @@ Item{
             Layout.preferredWidth: 25
 
             onClicked: {
-                console.log("Switching to step 2")
                 step3.visible = false
                 step2.visible = true
             }

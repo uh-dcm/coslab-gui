@@ -158,7 +158,6 @@ Item{
                 backend.generate_scores()
                 
                 loadingStatus.visible = false
-                console.log("Switching to step 3")
                 step2.visible = false
                 step3.visible = true
             }
