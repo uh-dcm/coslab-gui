@@ -33,17 +33,16 @@ Item {
 
             Button{
                 id: btAddLocal
-                text: qsTr("Add Images from Local Machine")
+                text: qsTr("Add images")
                 onClicked: fileDialog.open()
                 Layout.fillWidth: true
             }
 
-            Button{
-                id: btAddInternet
-                text: qsTr("Add Images from the Internet")
-
-                onClicked: textDialog.open()
-            }
+            //Button{
+            //    id: btAddInternet
+            //    text: qsTr("Add Images from the Internet")
+            //    onClicked: textDialog.open()
+            //}
         }
 
         RowLayout{
