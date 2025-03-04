@@ -136,7 +136,7 @@ Item {
                 width: 40
                 height: 40
                 background: Image {
-                    source: "Graphics/trashcan icon.png"
+                    source: "graphics/trashcan.png"
                 }
                 onClicked: {
                     images.remove(index)

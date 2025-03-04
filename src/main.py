@@ -167,7 +167,7 @@ if __name__ == "__main__":
 
     engine.rootContext().setContextProperty("backend", analyst)
 
-    qml_file = Path(__file__).resolve().parent / "UI/main.qml"
+    qml_file = Path(__file__).resolve().parent / "ui/main.qml"
     engine.load(qml_file)
     if not engine.rootObjects():
         sys.exit(-1)
