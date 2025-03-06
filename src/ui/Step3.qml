@@ -16,35 +16,34 @@ import "."
 // Placeholder
 
 Item{
-    
-    Title{
-        id: title
-    }
 
     // List of wordclouds
-    ListView {
+    Flow {
         id: wordcloudView
         
         anchors.top: title.bottom ; anchors.topMargin: 20
         anchors.right: parent.right ; anchors.rightMargin: 20
         anchors.left: parent.left ; anchors.leftMargin: 20
         anchors.bottom: resultTable.top ; anchors.bottomMargin: 40
-
+        height: 500 // parent.height - resultTable.height - top.height
+        width: parent.width
+        
         spacing: 10
-        flickableDirection: Flickable.AutoFlickDirection
-        orientation: Qt.Horizontal
 
-        model: wordcloudModel
+        Repeater {
+            model: wordcloudModel
 
-        delegate: Item {
-            width: 200
-            height: wordcloudView.height
-            Image {
-                width: 200
-                height: wordcloudView.height
-                source: model.url
-                fillMode: Image.PreserveAspectFit
+            delegate: Item {
+                width: parent.width / 2 - 5
+                height: parent.height / 2 - 5
+                Image {
+                    width: parent.width
+                    height: parent.height
+                    source: model.url
+                    fillMode: Image.PreserveAspectFit
+                }
             }
+
         }
     }
 
@@ -65,8 +64,8 @@ Item{
         model: score_table
 
         delegate: Rectangle {
-            implicitWidth: resultTable.width / 5
-            implicitHeight: resultTable.height / 5
+            implicitWidth: resultTable.width / score_table.rowCount
+            implicitHeight: resultTable.height / score_table.rowCount
             
             border.width: 1
 
@@ -103,8 +102,7 @@ Item{
             Layout.preferredWidth: 25
 
             onClicked: {
-                step3.visible = false
-                step2.visible = true
+                content.source = "Step2.qml"
             }
         }
     }

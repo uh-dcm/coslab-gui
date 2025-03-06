@@ -13,10 +13,6 @@ import "."
 
 Item {
 
-    Title{
-        id: title
-    }
-
     ColumnLayout{
         id: buttonGrid
         // Positioning
@@ -58,8 +54,7 @@ Item {
                 Layout.preferredWidth: 60
 
                 onClicked: {
-                    step1.visible = false
-                    step2.visible = true
+                    content.source = "Step2.qml"
                 }
 
             }
@@ -112,42 +107,41 @@ Item {
             }
         }
     }
-
-   ListView {
+    
+    Flow {
         id: imageListView
-        anchors.left: parent.left ; anchors.leftMargin: 20
-        anchors.right: parent.right ; anchors.rightMargin: 20
-        anchors.top: title.bottom ; anchors.topMargin: 20
-        anchors.bottom: buttonGrid.top ; anchors.bottomMargin: 40
-
+        anchors.fill: parent
+        anchors.leftMargin: 20
+        anchors.rightMargin: 20
+        anchors.topMargin: 20
+        anchors.bottomMargin: 40 + buttonGrid.height
         spacing: 10
-        flickableDirection: Flickable.AutoFlickDirection
-        orientation: Qt.Horizontal
-
-        model: images
-
-        delegate: Item {
-            width: 200
-            height: imageListView.height
-
-            Button {
-                anchors.top: parent.top
-                anchors.left: parent.left
-                width: 40
-                height: 40
-                background: Image {
-                    source: "graphics/trashcan.png"
-                }
-                onClicked: {
-                    images.remove(index)
-                }
-            }
-
-            Image {
+        
+        Repeater {
+            model: images
+            delegate: Item {
                 width: 200
-                height: imageListView.height
-                source: model.imageSource
-                fillMode: Image.PreserveAspectFit
+                height: 200
+
+                Button {
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    width: 40
+                    height: 40
+                    background: Image {
+                        source: "graphics/trashcan.png"
+                    }
+                    onClicked: {
+                        images.remove(index)
+                    }
+                }
+
+                Image {
+                    width: parent.width
+                    height: parent.height
+                    source: model.imageSource
+                    fillMode: Image.PreserveAspectFit
+                }
             }
         }
     }

@@ -14,10 +14,6 @@ import "."
 
 Item{
 
-    Title{
-        id: title
-    }
-
     // subtitle
     Text{
         id: instructions
@@ -138,9 +134,8 @@ Item{
             Layout.preferredWidth: 60
 
             onClicked: {
+                busyindicator.running = true
 
-                // Converting ListModel so it can be sent to python
-                loadingStatus.visible = true
                 var itemList = []
                 for (var i = 0; i < images.count; i++) {
                     var item = images.get(i)
@@ -157,9 +152,8 @@ Item{
                 backend.generate_wordcloud()
                 backend.generate_scores()
                 
-                loadingStatus.visible = false
-                step2.visible = false
-                step3.visible = true
+                busyindicator.running = false
+                content.source = "Step3.qml"
             }
 
         }
@@ -172,6 +166,7 @@ Item{
                 for(var i = 0; i < urls.length; i++){
                     wordcloudModel.append({url : urls[i]});
                 }
+                print( wordcloudModel.count )
             }
         }
 
@@ -200,39 +195,11 @@ Item{
             Layout.preferredWidth: 25
 
             onClicked: {
-                step2.visible = false
-                step1.visible = true
+                content.source = "Step1.qml"
             }
 
         }
 
     }
 
-    // This rectangle doesn't actually appear because QML waits for
-    // python to finish all its code before repainting. This would need
-    // to be rethreaded to allow for updates in the GUI
-    Rectangle {
-        id: loadingStatus
-        anchors.centerIn: parent
-        width: 300
-        height: 100
-        color: "gray"
-        border.color: "black"
-        border.width: 2
-        visible: false 
-        
-        Text {
-            id: loadingText
-            anchors.centerIn: parent
-            text: "Loading..."
-            font.pixelSize: 25
-        }
-
-        Connections{
-            target: backend 
-            function onStatusUpdated(status){
-                loadingText.text = status
-            }
-        }
-    }
 }

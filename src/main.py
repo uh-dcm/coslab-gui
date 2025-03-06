@@ -35,8 +35,6 @@ class AnalyseImages(QObject):
 
     @Slot(list, list)
     def analyse_images(self, url_list, checkboxes):
-        # Begin loading coslab_core
-        self.statusUpdated.emit("Loading Tag Comparators...")
         global tag_comparator
         from coslab import tag_comparator
         global taggerresults

@@ -16,11 +16,11 @@ import "."
 ApplicationWindow {
     id: mainWindow
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("coslab-gui")
+    width: 800
+    height: 1000
+    title: qsTr("COSLAB")
 
-     Settings {
+    Settings {
         id: service_settings
         property var azure_subscription_key
         property var azure_endpoint
@@ -31,18 +31,21 @@ ApplicationWindow {
 
     }
 
-    // the list for all images
-    ListModel {
-        id: images
+    BusyIndicator {
+        id: busyindicator
+        anchors.fill: parent
+        running: false
     }
-    // List for generated wordclouds
     ListModel {
-        id: wordcloudModel
+        id: images // the list for all images
+    }
+    
+    ListModel {
+        id: wordcloudModel // List for generated wordclouds
     }
 
-    // Table model for the scores
     TableModel {
-        id: score_table
+        id: score_table // Table model for the scores
         
         TableModelColumn { display: "header" }
         TableModelColumn { display: "aws" }
@@ -59,21 +62,28 @@ ApplicationWindow {
         ]
     }
 
-    Step1 {
-        id: step1
+    Column {
         anchors.fill: parent
-        visible: true
+
+        Top {
+            id: top
+            width: parent.width
+            height: 50
+        }
+        
+        Loader {
+            id: content
+            width: parent.width
+            height: parent.height - top.height - bottom.height
+            source: "Step1.qml"
+        }
+
+        Bottom {
+            id: bottom
+            width: parent.width
+            height:70
+        }
     }
 
-    Step2 {
-        id: step2
-        anchors.fill: parent
-        visible: false
-    }
-
-    Step3{
-        id: step3
-        anchors.fill: parent
-        visible: false
-    }
+    
 }
