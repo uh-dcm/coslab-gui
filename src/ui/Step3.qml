@@ -13,19 +13,16 @@ import Qt.labs.qmlmodels
 // Templates
 import "."
 
-// Placeholder
-
 Item{
+
+    width: parent.width
+    height: parent.height
 
     // List of wordclouds
     Flow {
         id: wordcloudView
         
-        anchors.top: title.bottom ; anchors.topMargin: 20
-        anchors.right: parent.right ; anchors.rightMargin: 20
-        anchors.left: parent.left ; anchors.leftMargin: 20
-        anchors.bottom: resultTable.top ; anchors.bottomMargin: 40
-        height: 500 // parent.height - resultTable.height - top.height
+        height: parent.height - resultTable.height - buttonRow.height
         width: parent.width
         
         spacing: 10
