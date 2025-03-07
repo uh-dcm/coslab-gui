@@ -152,7 +152,7 @@ class AnalyseImages(QObject):
             pass ## TODO: add JSON export to the library
         # Excel export
         if excel:
-            pass ## TODO: add excel export to the library
+            self._results.to_pandas().to_excel( f"{location}/results.xlsx" )
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)

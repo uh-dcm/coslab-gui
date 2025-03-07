@@ -143,11 +143,11 @@ Item{
             //    checked: false
             //    text: "JSON"
             //}
-            //CheckBox {
-            //    id: excel
-            //    checked: false
-            //    text: "Excel"
-            //}
+            CheckBox {
+                id: excel
+                checked: false
+                text: "Excel"
+            }
         }
 
         onAccepted: {
@@ -161,7 +161,7 @@ Item{
         title: "Select a Folder"
         options: FolderDialog.ShowDirsOnly
         onAccepted: {
-            backend.export(wc.checked, false, csv.checked, pickle.checked, false, false, currentFolder)
+            backend.export(wc.checked, false, csv.checked, pickle.checked, false, excel.checked, currentFolder)
         }
     }
 }

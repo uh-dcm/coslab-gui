@@ -6,3 +6,4 @@ wordcloud
 yaml
 coslab-core
 pandas
+openpyxl
