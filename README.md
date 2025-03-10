@@ -24,6 +24,10 @@ You can also expert the word clouds and image labelling agreements for each serv
 
 ![Summary of outcomes and exporting](./docs/step3.png)
 
+Exporting CSV or Excel files gives you access to service provided labels for each image.
+In addition, it includes service indicated confidence score as well as our calculated COSLAB scores across services.
+For example, in the column `coslab-aws` the current service, label -pair is contrasted with all labels provided by Amazon Web Services.
+
 ## Acknowledgements
 
 Software developed by

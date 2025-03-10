@@ -18,6 +18,8 @@ from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtCore import QObject, Signal, Slot, QSettings
 
+from coslab import tag_comparator, taggerresults
+
 class AnalyseImages(QObject):
     def __init__(self):
         super().__init__()
@@ -35,11 +37,6 @@ class AnalyseImages(QObject):
 
     @Slot(list, list)
     def analyse_images(self, url_list, checkboxes):
-        global tag_comparator
-        from coslab import tag_comparator
-        global taggerresults
-        from coslab import taggerresults
-
         results = taggerresults.TaggerResults()
         services = {}
         # Setting up the services with coslab-core
@@ -143,7 +140,7 @@ class AnalyseImages(QObject):
             pass ## TODO: add comparsion table export
         # CSV export
         if comma:
-            self._results.export_csv( f"{location}/results.csv")
+            self._results.export_csv( f"{location}/results.csv", comparator = tag_comparator.glove_comparator  )
         # Pickle export
         if pickl:
             self._results.export_pickle( f"{location}/results.pickle")
@@ -152,7 +149,7 @@ class AnalyseImages(QObject):
             pass ## TODO: add JSON export to the library
         # Excel export
         if excel:
-            self._results.to_pandas().to_excel( f"{location}/results.xlsx" )
+            self._results.to_pandas( comparator = tag_comparator.glove_comparator ).to_excel( f"{location}/results.xlsx" )
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
