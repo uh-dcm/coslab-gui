@@ -44,6 +44,13 @@ Item{
         }
     }
 
+    Text {
+        text: "Mean COSLAB score for each service pair (1 is best, 0 is worse)"
+        font.pointSize: 20
+        padding: 10
+        anchors.bottom: resultTable.top
+    }
+
     // Table of service scores
     TableView {
         id: resultTable

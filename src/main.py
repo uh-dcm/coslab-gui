@@ -123,7 +123,10 @@ class AnalyseImages(QObject):
             for j, other_service in enumerate(all_services):
                 if service in self._services and other_service in self._services:
                     compared = tag_comparator.compare_tags(self._results, service, other_service, tag_comparator.glove_comparator)
-                    self._scores[i][j] = sum([value[0] for value in compared.values()])
+                    coslabscore = [value[0] for value in compared.values()]
+                    coslabscore = np.array( coslabscore )
+                    coslabscore = coslabscore[coslabscore >= 0] ## remove -1 no match values
+                    self._scores[i][j] = np.mean(coslabscore)
                     scoresString[i][j] = "{:.2f}".format(self._scores[i][j])
         self.scoresGenerated.emit(scoresString)
 
