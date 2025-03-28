@@ -1,7 +1,8 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 
-Item {
+Pane {
 
     Image {
         id: logo
@@ -17,19 +18,18 @@ Item {
 
     Text{
         text: "coslab"
-        font.pixelSize: 30
+        font.pixelSize: logo.height
         anchors.top: logo.top
         anchors.left: logo.right
         anchors.leftMargin: 10
     }
-
-
+    
     Button {
-        text: "Support"
+        text: "HELP"
         anchors.top: parent.top
         anchors.right: parent.right
-        leftPadding: 20
-        topPadding: 10
+        anchors.rightMargin: 30
+        anchors.topMargin: 5
         onClicked: Qt.openUrlExternally("https://github.com/uh-dcm/coslab-gui")
     }
 
