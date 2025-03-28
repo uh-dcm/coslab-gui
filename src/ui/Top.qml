@@ -3,13 +3,24 @@ import QtQuick.Controls
 
 Item {
 
+    Image {
+        id: logo
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.topMargin: 5
+        anchors.leftMargin: 30
+        height: 50
+        width: 50
+        source: "graphics/coslabicon.png"
+        fillMode: Image.PreserveAspectFit
+    }
+
     Text{
         text: "coslab"
         font.pixelSize: 30
-        anchors.top: parent.top
-        anchors.left: parent.left
-        leftPadding: 20
-        topPadding: 10
+        anchors.top: logo.top
+        anchors.left: logo.right
+        anchors.leftMargin: 10
     }
 
 

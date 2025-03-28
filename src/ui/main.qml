@@ -68,7 +68,7 @@ ApplicationWindow {
         Top {
             id: top
             width: parent.width
-            height: 50
+            height: 60
         }
         
         Loader {
