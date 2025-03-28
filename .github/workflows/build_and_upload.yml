@@ -12,7 +12,7 @@ jobs:
           requirements: 'src/requirements.txt'
           upload_exe_with_name: 'Executable-MacOS-arm64'
           spec: 'src/main.py'
-          options: -F, --noconsole, --name "COSLAB", --add-data "src/ui:ui"
+          options: -F, --noconsole, --name "COSLAB", --add-data "src/ui:ui", --icon src/ui/graphics/coslabicon.png
   pyinstaller-build-macos-intel:
     runs-on: macos-13
     steps:
@@ -23,7 +23,7 @@ jobs:
           requirements: 'src/requirements.txt'
           upload_exe_with_name: 'Executable-MacOS-intel'
           spec: 'src/main.py'
-          options: -F, --noconsole, --name "COSLAB", --add-data "src/ui:ui"
+          options: -F, --noconsole, --name "COSLAB", --add-data "src/ui:ui", --icon src/ui/graphics/coslabicon.png
   pyinstaller-build-windows:
       runs-on: windows-latest
       steps:
@@ -34,4 +34,4 @@ jobs:
             requirements: 'src/requirements.txt'
             upload_exe_with_name: 'Executable-Windows'
             spec: 'src/main.py'
-            options: -F, --name "COSLAB", --add-data "src/ui;ui" 
+            options: -F, --name "COSLAB", --add-data "src/ui;ui", --icon src/ui/graphics/coslabicon.png
