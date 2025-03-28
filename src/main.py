@@ -12,7 +12,6 @@ import numpy as np
 import pandas as pd
 
 from wordcloud import WordCloud
-from pathlib import Path
 
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
@@ -162,7 +161,12 @@ if __name__ == "__main__":
 
     engine.rootContext().setContextProperty("backend", analyst)
 
-    qml_file = Path(__file__).resolve().parent / "ui/main.qml"
+    app_path = os.path.abspath(os.path.dirname(__file__))
+    if getattr(sys, 'frozen', False):
+        # If the app is frozen (compiled)
+        app_path = sys._MEIPASS
+    
+    qml_file = os.path.join( app_path, "ui/main.qml" )
     engine.load(qml_file)
     if not engine.rootObjects():
         sys.exit(-1)
