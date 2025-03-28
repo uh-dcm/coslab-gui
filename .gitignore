@@ -81,3 +81,11 @@ CMakeLists.txt.user*
 # Generated Files
 *wordcloud.png
 
+.venv
+build
+dist
+*.spec
+.gitignore
+*.sh
+.gitignore 
+notebook
