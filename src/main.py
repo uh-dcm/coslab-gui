@@ -151,6 +151,11 @@ class AnalyseImages(QObject):
             self._results.to_pandas( comparator = tag_comparator.glove_comparator ).to_excel( f"{location}/results.xlsx" )
 
 if __name__ == "__main__":
+    ## disable all outputs to console
+    sys.stdout = open(os.devnull, "w")
+    sys.stderr = open(os.devnull, "w")
+
+    ## establish GUI
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
