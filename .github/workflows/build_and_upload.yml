@@ -2,6 +2,13 @@ on:
   workflow_dispatch:
 
 jobs:
+  release:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Release"
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
   pyinstaller-build-macos-arm64:
     runs-on: macos-latest
     steps:
@@ -18,6 +25,7 @@ jobs:
         with:
           name: 'COSLAB-MacOS-arm64'
           path: dist/*.app
+          upload_url: ${{ steps.release.outputs.upload_url }}
   pyinstaller-build-macos-intel:
     runs-on: macos-13
     steps:
@@ -34,6 +42,7 @@ jobs:
         with:
           name: 'COSLAB-MacOS-intel'
           path: dist/*.app
+          upload_url: ${{ steps.release.outputs.upload_url }}
   pyinstaller-build-windows:
       runs-on: windows-latest
       steps:
@@ -50,3 +59,4 @@ jobs:
           with:
             name: 'COSLAB-Windows'
             path: dist/*.exe
+            upload_url: ${{ steps.release.outputs.upload_url }}
