@@ -13,6 +13,11 @@ jobs:
           upload_exe_with_name: 'Executable-MacOS-arm64'
           spec: 'src/main.py'
           options: -F, --noconsole, --name "COSLAB", --add-data "src/ui:ui", --icon src/ui/graphics/coslabicon.png
+      - name: Upload 
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'COSLAB-MacOS-arm64'
+          path: dist/*.app
   pyinstaller-build-macos-intel:
     runs-on: macos-13
     steps:
@@ -24,6 +29,11 @@ jobs:
           upload_exe_with_name: 'Executable-MacOS-intel'
           spec: 'src/main.py'
           options: -F, --noconsole, --name "COSLAB", --add-data "src/ui:ui", --icon src/ui/graphics/coslabicon.png
+      - name: Upload 
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'COSLAB-MacOS-intel'
+          path: dist/*.app
   pyinstaller-build-windows:
       runs-on: windows-latest
       steps:
@@ -35,3 +45,8 @@ jobs:
             upload_exe_with_name: 'Executable-Windows'
             spec: 'src/main.py'
             options: -F, --name "COSLAB", --add-data "src/ui;ui", --icon src/ui/graphics/coslabicon.png
+        - name: Upload 
+          uses: actions/upload-artifact@v4
+          with:
+            name: 'COSLAB-Windows'
+            path: dist/*.exe
