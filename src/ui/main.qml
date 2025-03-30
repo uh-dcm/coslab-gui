@@ -62,9 +62,14 @@ ApplicationWindow {
         ]
     }
 
-    header: Top {
+    header: Header {
             id: top
             height: 60
+    }
+
+    footer: Footer {
+        id: bottom
+        height: 30
     }
 
     Column {
@@ -72,16 +77,10 @@ ApplicationWindow {
         
         Loader {
             id: content
-            width: parent.width
-            height: parent.height - bottom.height
+            anchors.fill: parent
             source: "Step1.qml"
         }
 
-        Bottom {
-            id: bottom
-            width: parent.width
-            height:70
-        }
     }
 
     
