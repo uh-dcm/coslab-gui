@@ -6,22 +6,54 @@ For example, Google Vision and Microsoft Azure provide somewhat different labels
 
 ![Scene of a park](./docs/example_image.png)
 
-Google sees the image as: Daytime, Sky, City, Public Space, Human Settlement, Road, Residential Area, Urban Area, Asphalt, Metropolitan Area, Tree, Infrastructure, Park, Road Surface, Downtown, Architecture, Neighbourhood, Skyline, Real Estate, Thoroughfare, Building, Suburb, Urban Design, Street, Lane, Walkway, Cloud, Recreation, Plaza, Town Square, Sidewalk, Nonbuilding, Structure,
+| Google Vision      | Azure    |
+|--------------------|----------|
+|  Architecture      |  Bench   |
+|  Asphalt           |  Bus     |
+|  Building          |          |
+|  **City**          | **City** |
+|  Cloud             |  Empty   |
+|  Daytime           |  Grass   |
+|  Downtown          |  Green   |
+|  Human Settlement  |  Hydrant |
+|  Infrastructure    |          |
+|  Lane              |          |
+|  Metropolitan Area |          |
+|  Neighbourhood     |          |
+|  Nonbuilding       |          |
+|  **Park**          | **Park** |
+|  Plaza             |  Parked  |
+|  Public Space      |  Red     |
+|  Real Estate       |  Riding  |
+|  Recreation        |          |
+|  Residential Area  |          |
+|  **Road**          | **Road** |
+|  Road Surface      |  Side    |
+|  Sidewalk          |  Sign    |
+|  Sky               |  Sitting |
+|  Skyline           |  Stop    |
+|  **Street**        |  **Street** |
+|  Structure         |  Tall    |
+|  Suburb            |  Track   |
+|  Thoroughfare      |  Traffic |
+|  Town Square       |  Train   |
+|  Tree              |  View    |
+|  Urban Area        |  Yellow  |
+|  Urban Design      | Outdoor  |
+|  Walkway           |          |
 
-while Azure sees the image as:
 
-Outdoor, Road, Street, City, Grass, Sitting, Empty, Red, View, Side, Stop, Green, Traffic, Sign, Track, Yellow, Park, Tall, Bench, Parked, Train, Hydrant, Riding, Bus
-
-There are some perfect matches, such as Road, Park and City,
+There are some perfect matches, such as road, park and city,
 but also some close calls where it appears that both services see a similar object, but just see articulate them differently.
-For example, Google Vision sees a lane or a Walkway, which are not that different from Azure's Road and Street.
+For example, Google Vision sees a lane or a walkway, which are not that different from Azure's road and street.
 And then there are labels where it is obvious that _interservice reliability_ - similar to intercoder reliability among human annotators - would be low:
-Azure's Bus and Train do not a close counterpart in Google Vision labels.
+Azure's bus and train do not a close counterpart in Google Vision labels.
 
-We developed the cross-service label agreement score (COSLAB) to avaluate the similarity across services to allow for more reliable use of image recognition tools in social science research.
-The score uses natural language processing to measure how similarly two terms are used in written language (from 0-1) and using these cosine similarities, determines the best match for each label across other services.
+[Berg & Nelimarkka (2023)](https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/asi.24827) developed the cross-service label agreement score (COSLAB) to evaluate the similarity across services to allow for more reliable use of image recognition tools in social science research.
+The score uses natural language processing to measure how similarly two labels are used in written language (from 0-1) and  determines the best match for each label across other services.
+Therefore, labels like cat and dog would have a higher COSLAB score than cat and car.
 
-This tool allows you to use a drag-and-drop tool for the COSLAB measurement tool [(Berg & Nelimarkka, 2023)](https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/asi.24827) to label image content and assess across image recognition services and calculate the overall quality of these labels.
+This software allows you to calculate COSLAB measurements across various image recognition service and assess the overall quality of service provided labels[(Berg & Nelimarkka, 2023)](https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/asi.24827).
 
 ## Step-by-step user guide
 
@@ -58,13 +90,24 @@ Software developed by
 
 Development funded by the [DARIAH-FI infrastructure](https://www.dariah.fi/), funding decision Research Council of Finland 35872 and C. V. Åkerlund foundation.
 
+and it uses following libraries: [coslab-core](https://github.com/uh-soco/coslab-core), PySide6, shoboken6, wordcloud, PyYAML, pandas and openpyxl.
+
+## Recommended citation
+
+When using the measurements from COSLAB, pleace cite:
+
+* [Berg, A., & Nelimarkka, M. (2023). Do you see what I see? Measuring the 
+semantic differences in image‐recognition services' outputs. _Journal of 
+the Association for Information Science and 
+Technology._](https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/asi.24827)
+
 ## References
 
 * [Berg, A., & Nelimarkka, M. (2023). Do you see what I see? Measuring the 
 semantic differences in image‐recognition services' outputs. _Journal of 
 the Association for Information Science and 
 Technology._](https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/asi.24827)
-* [Nelimarkka, M., & Berg, A. (2023). Is the World Different Depending on 
+* [Berg, A. & Nelimarkka, M., (2023). Is the World Different Depending on 
 Whose AI Is Looking at It? Comparing Image Recognition Services for Social 
 Science Research. _Information Matters_, 
 3(8).](https://informationmatters.org/2023/08/is-the-world-different-depending-on-whose-ai-is-looking-at-it-comparing-image-recognition-services-for-social-science-research/) 
