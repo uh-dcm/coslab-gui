@@ -3,7 +3,13 @@ import QtQuick.Controls
 
 Item {
 
-    width: parent.width
-    height: parent.height
+    Image {
+        source: "graphics/dariah-fi-logo.svg"
+        height: 100
+        width: 300
+        fillMode: Image.PreserveAspectFit
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+    }
 
 }

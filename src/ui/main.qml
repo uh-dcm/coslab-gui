@@ -63,13 +63,15 @@ ApplicationWindow {
     }
 
     header: Header {
-            id: top
-            height: 60
+        id: top
+        height: 60
+        width: parent.width
     }
 
     footer: Footer {
         id: bottom
-        height: 30
+        height: 60
+        width: parent.width
     }
 
     Column {
