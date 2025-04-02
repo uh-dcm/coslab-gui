@@ -51,9 +51,13 @@ Azure's bus and train do not a close counterpart in Google Vision labels.
 
 [Berg & Nelimarkka (2023)](https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/asi.24827) developed the cross-service label agreement score (COSLAB) to evaluate the similarity across services to allow for more reliable use of image recognition tools in social science research.
 The score uses natural language processing to measure how similarly two labels are used in written language (from 0-1) and  determines the best match for each label across other services.
-Therefore, labels like cat and dog would have a higher COSLAB score than cat and car.
+Therefore, labels like cat and dog would have a higher COSLAB score than cat and car: there cat and dog appear more often together than cat and car.
 
-This software allows you to calculate COSLAB measurements across various image recognition service and assess the overall quality of service provided labels[(Berg & Nelimarkka, 2023)](https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/asi.24827).
+### Recommended citation
+
+If you use the cross-service label agreement scores, please cite:
+
+> Berg, A., & Nelimarkka, M. (2023). Do you see what I see? Measuring the semantic differences in image‐recognition services’ outputs. In Journal of the Association for Information Science and Technology (Vol. 74, Issue 11, pp. 1307–1324). Wiley. https://doi.org/10.1002/asi.24827 
 
 ## Step-by-step user guide
 
@@ -86,20 +90,12 @@ For example, in the column `coslab-aws` the current service, label -pair is cont
 Software developed by
 
 * Leonardo Negri
+* Anton Berg
 * Matti Nelimarkka
 
 Development funded by the [DARIAH-FI infrastructure](https://www.dariah.fi/), funding decision Research Council of Finland 35872 and C. V. Åkerlund foundation.
 
-and it uses following libraries: [coslab-core](https://github.com/uh-soco/coslab-core), PySide6, shoboken6, wordcloud, PyYAML, pandas and openpyxl.
-
-## Recommended citation
-
-When using the measurements from COSLAB, pleace cite:
-
-* [Berg, A., & Nelimarkka, M. (2023). Do you see what I see? Measuring the 
-semantic differences in image‐recognition services' outputs. _Journal of 
-the Association for Information Science and 
-Technology._](https://asistdl.onlinelibrary.wiley.com/doi/full/10.1002/asi.24827)
+We uses following libraries: [coslab-core](https://github.com/uh-soco/coslab-core), PySide6, shoboken6, wordcloud, PyYAML, pandas and openpyxl.
 
 ## References
 
