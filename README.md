@@ -95,7 +95,7 @@ Software developed by
 
 Development funded by the [DARIAH-FI infrastructure](https://www.dariah.fi/), funding decision Research Council of Finland 35872 and C. V. Åkerlund foundation.
 
-We uses following libraries: [coslab-core](https://github.com/uh-soco/coslab-core), PySide6, shoboken6, wordcloud, PyYAML, pandas and openpyxl.
+We uses following Python libraries: [coslab-core](https://github.com/uh-soco/coslab-core), PySide6, shoboken6, wordcloud, PyYAML, pandas and openpyxl.
 
 ## References
 
